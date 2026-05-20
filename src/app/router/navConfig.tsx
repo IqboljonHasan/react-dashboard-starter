@@ -35,17 +35,30 @@ export const NAV_ROUTES: NavRoute[] = [
     path: ROUTES.SETTINGS,
     handle: { title: 'nav.settings', icon: <SettingOutlined /> },
     children: [
-      { path: ROUTES.SETTINGS_APPEARANCE, handle: { title: 'nav.settingsAppearance', icon: <BgColorsOutlined /> } },
-      { path: ROUTES.SETTINGS_PROFILE, handle: { title: 'nav.settingsProfile', icon: <UserOutlined /> } },
-      { path: ROUTES.SETTINGS_SECURITY, handle: { title: 'nav.settingsSecurity', icon: <LockOutlined /> } },
-      { path: ROUTES.SETTINGS_NOTIFICATIONS, handle: { title: 'nav.settingsNotifications', icon: <BellOutlined /> } },
+      {
+        path: ROUTES.SETTINGS_APPEARANCE,
+        handle: { title: 'nav.settingsAppearance', icon: <BgColorsOutlined /> },
+      },
+      {
+        path: ROUTES.SETTINGS_PROFILE,
+        handle: { title: 'nav.settingsProfile', icon: <UserOutlined /> },
+      },
+      {
+        path: ROUTES.SETTINGS_SECURITY,
+        handle: { title: 'nav.settingsSecurity', icon: <LockOutlined /> },
+      },
+      {
+        path: ROUTES.SETTINGS_NOTIFICATIONS,
+        handle: { title: 'nav.settingsNotifications', icon: <BellOutlined /> },
+      },
     ],
   },
 ];
 
-export const navHandleMap = Object.fromEntries(
-  NAV_ROUTES.map((r) => [r.path, r.handle]),
-) as Record<string, NavRoute['handle']>;
+export const navHandleMap = Object.fromEntries(NAV_ROUTES.map((r) => [r.path, r.handle])) as Record<
+  string,
+  NavRoute['handle']
+>;
 
 export const SUB_ROUTE_HANDLES: Record<string, IRouteHandle> = {
   [ROUTES.USER_DETAIL]: { title: 'nav.userDetail' },

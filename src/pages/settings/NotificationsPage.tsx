@@ -13,10 +13,30 @@ interface NotifSetting {
 }
 
 const SETTINGS: NotifSetting[] = [
-  { id: 'email_activity', label: 'Email notifications', description: 'Receive emails for important account activity', defaultValue: true },
-  { id: 'push_alerts', label: 'Push alerts', description: 'Browser push notifications for real-time updates', defaultValue: false },
-  { id: 'weekly_digest', label: 'Weekly digest', description: 'A weekly summary of your dashboard activity', defaultValue: true },
-  { id: 'security_alerts', label: 'Security alerts', description: 'Get notified about sign-ins from new devices', defaultValue: true },
+  {
+    id: 'email_activity',
+    label: 'Email notifications',
+    description: 'Receive emails for important account activity',
+    defaultValue: true,
+  },
+  {
+    id: 'push_alerts',
+    label: 'Push alerts',
+    description: 'Browser push notifications for real-time updates',
+    defaultValue: false,
+  },
+  {
+    id: 'weekly_digest',
+    label: 'Weekly digest',
+    description: 'A weekly summary of your dashboard activity',
+    defaultValue: true,
+  },
+  {
+    id: 'security_alerts',
+    label: 'Security alerts',
+    description: 'Get notified about sign-ins from new devices',
+    defaultValue: true,
+  },
 ];
 
 export function NotificationsPage() {

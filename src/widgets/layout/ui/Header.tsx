@@ -67,9 +67,7 @@ export function Header() {
     { key: 'uz', label: "O'zbek", onClick: () => handleLanguageChange('uz') },
   ];
 
-  const themeItems: MenuProps['items'] = (
-    ['light', 'dark', 'system'] as Theme[]
-  ).map((t) => ({
+  const themeItems: MenuProps['items'] = (['light', 'dark', 'system'] as Theme[]).map((t) => ({
     key: t,
     label: THEME_LABELS[t],
     onClick: () => setTheme(t),
@@ -84,14 +82,22 @@ export function Header() {
 
       <Space size="middle">
         <Dropdown menu={{ items: themeItems, selectedKeys: [theme] }} placement="bottomRight">
-          <Space size={4} className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors">
+          <Space
+            size={4}
+            className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
+          >
             <BgColorsOutlined className="text-lg" />
-            <Text className="text-sm text-muted-foreground hidden sm:inline">{THEME_LABELS[theme]}</Text>
+            <Text className="text-sm text-muted-foreground hidden sm:inline">
+              {THEME_LABELS[theme]}
+            </Text>
           </Space>
         </Dropdown>
 
         <Dropdown menu={{ items: languageItems, selectedKeys: [language] }} placement="bottomRight">
-          <Space size={4} className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors">
+          <Space
+            size={4}
+            className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
+          >
             <GlobalOutlined className="text-lg" />
             <Text className="text-sm text-muted-foreground">{LANGUAGE_LABELS[language]}</Text>
           </Space>

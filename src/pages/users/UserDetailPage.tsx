@@ -19,10 +19,7 @@ export function UserDetailPage() {
     <>
       <PageTitle title="User Detail" />
       <div className="mb-4">
-        <Button
-          icon={<ArrowLeftOutlined />}
-          onClick={() => navigate(ROUTES.USERS)}
-        >
+        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(ROUTES.USERS)}>
           Back to users
         </Button>
       </div>
@@ -39,10 +36,24 @@ export function UserDetailPage() {
           </div>
         </div>
         <Descriptions column={1} bordered size="small">
-          <Descriptions.Item label={<><UserOutlined className="mr-1" />Name</>}>
+          <Descriptions.Item
+            label={
+              <>
+                <UserOutlined className="mr-1" />
+                Name
+              </>
+            }
+          >
             User #{id}
           </Descriptions.Item>
-          <Descriptions.Item label={<><MailOutlined className="mr-1" />Email</>}>
+          <Descriptions.Item
+            label={
+              <>
+                <MailOutlined className="mr-1" />
+                Email
+              </>
+            }
+          >
             user{id}@example.com
           </Descriptions.Item>
           <Descriptions.Item label="Role">

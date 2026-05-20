@@ -31,7 +31,9 @@ export function LoginForm() {
         </div>
 
         <div className="mb-6 p-3 rounded-lg bg-blue-50 dark:bg-blue-950">
-          <Text className="text-xs text-muted-foreground block mb-2">Demo accounts (password: <code>password</code>)</Text>
+          <Text className="text-xs text-muted-foreground block mb-2">
+            Demo accounts (password: <code>password</code>)
+          </Text>
           <div className="flex flex-wrap gap-1">
             {DEMO_CREDENTIALS.map((c) => (
               <Tag
@@ -45,7 +47,13 @@ export function LoginForm() {
           </div>
         </div>
 
-        <Form<LoginPayload> form={form} layout="vertical" size="large" onFinish={login} requiredMark={false}>
+        <Form<LoginPayload>
+          form={form}
+          layout="vertical"
+          size="large"
+          onFinish={login}
+          requiredMark={false}
+        >
           <Form.Item
             name="email"
             label={t('login.emailLabel')}

@@ -9,18 +9,10 @@ export function SecurityPage() {
       <PageTitle title="Security" />
       <Card title="Change password" className="max-w-lg">
         <Form layout="vertical">
-          <Form.Item
-            name="current"
-            label="Current password"
-            rules={[{ required: true }]}
-          >
+          <Form.Item name="current" label="Current password" rules={[{ required: true }]}>
             <Input.Password prefix={<LockOutlined />} />
           </Form.Item>
-          <Form.Item
-            name="next"
-            label="New password"
-            rules={[{ required: true, min: 8 }]}
-          >
+          <Form.Item name="next" label="New password" rules={[{ required: true, min: 8 }]}>
             <Input.Password prefix={<LockOutlined />} />
           </Form.Item>
           <Form.Item
