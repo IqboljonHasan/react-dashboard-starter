@@ -1,0 +1,38 @@
+{
+  "page": {
+    "title": "Foydalanuvchilar",
+    "addUser": "Foydalanuvchi qo'shish"
+  },
+  "table": {
+    "user": "Foydalanuvchi",
+    "role": "Rol",
+    "status": "Holat",
+    "createdAt": "Qo'shilgan",
+    "actions": "Amallar",
+    "pagination": "{{total}} ta ichidan {{start}}-{{end}} ko'rsatilmoqda"
+  },
+  "filters": {
+    "searchPlaceholder": "Ism yoki email bo'yicha qidirish...",
+    "rolePlaceholder": "Barcha rollar",
+    "statusPlaceholder": "Barcha holatlar",
+    "clear": "Filtrlarni tozalash"
+  },
+  "roles": {
+    "admin": "Administrator",
+    "manager": "Menejer",
+    "viewer": "Tomoshabin"
+  },
+  "status": {
+    "active": "Faol",
+    "inactive": "Faol emas",
+    "suspended": "To'xtatilgan"
+  },
+  "deleteConfirm": {
+    "title": "Foydalanuvchini o'chirish",
+    "description": "Haqiqatan ham bu foydalanuvchini o'chirmoqchimisiz? Bu amalni ortga qaytarib bo'lmaydi.",
+    "ok": "O'chirish",
+    "cancel": "Bekor qilish"
+  },
+  "deleteSuccess": "Foydalanuvchi muvaffaqiyatli o'chirildi",
+  "deleteError": "Foydalanuvchini o'chirishda xatolik"
+}

@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "header": {
+    "profile": "Profile",
+    "logout": "Sign out"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search"
+  },
+  "status": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "empty": "No data available"
+  }
+}

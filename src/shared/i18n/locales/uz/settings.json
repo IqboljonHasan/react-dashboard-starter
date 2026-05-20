@@ -1,0 +1,17 @@
+{
+  "page": {
+    "title": "Sozlamalar"
+  },
+  "sections": {
+    "appearance": "Ko'rinish"
+  },
+  "fields": {
+    "theme": "Mavzu",
+    "language": "Til"
+  },
+  "theme": {
+    "light": "Yorug'",
+    "dark": "Qorong'i",
+    "system": "Tizim"
+  }
+}

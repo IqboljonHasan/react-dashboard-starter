@@ -1,0 +1,11 @@
+{
+  "page": {
+    "title": "Dashboard"
+  },
+  "stats": {
+    "totalUsers": "Total Users",
+    "totalRevenue": "Total Revenue",
+    "activeProjects": "Active Projects",
+    "pendingTasks": "Pending Tasks"
+  }
+}

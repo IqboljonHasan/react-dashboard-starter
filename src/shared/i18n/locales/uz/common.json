@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "dashboard": "Boshqaruv paneli",
+    "users": "Foydalanuvchilar",
+    "reports": "Hisobotlar",
+    "settings": "Sozlamalar"
+  },
+  "header": {
+    "profile": "Profil",
+    "logout": "Chiqish"
+  },
+  "actions": {
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "create": "Yaratish",
+    "search": "Qidirish"
+  },
+  "status": {
+    "loading": "Yuklanmoqda...",
+    "error": "Xatolik yuz berdi",
+    "empty": "Ma'lumot yo'q"
+  }
+}

@@ -1,0 +1,103 @@
+/* CRITICAL: Must come before @import to fix TailwindCSS v4 + AntD layer conflict.
+   This ensures AntD's CSS-in-JS layer sits above Tailwind's Preflight reset
+   but below components and utilities. */
+@layer theme, base, antd, components, utilities;
+
+@import "tailwindcss";
+
+/* ─── Semantic Color Tokens ─────────────────────────────────────────────────
+   All --color-* vars become Tailwind utility classes automatically in v4:
+     bg-background, text-foreground, border-border, bg-surface, etc.
+   ────────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Brand */
+  --color-primary: #1677ff;
+  --color-primary-hover: #4096ff;
+  --color-primary-active: #0958d9;
+  --color-primary-foreground: #ffffff;
+
+  /* Semantic surfaces */
+  --color-background: #f5f7fa;
+  --color-foreground: rgba(0, 0, 0, 0.88);
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+
+  /* Sidebar / header */
+  --color-sidebar: #001529;
+  --color-sidebar-foreground: rgba(255, 255, 255, 0.65);
+  --color-sidebar-active: #1677ff;
+  --color-header: #ffffff;
+
+  /* Semantic utility */
+  --color-muted: #f0f0f0;
+  --color-muted-foreground: rgba(0, 0, 0, 0.45);
+  --color-border: #e5e7eb;
+  --color-ring: #1677ff;
+
+  /* Status */
+  --color-success: #52c41a;
+  --color-success-foreground: #ffffff;
+  --color-warning: #faad14;
+  --color-warning-foreground: #ffffff;
+  --color-destructive: #ff4d4f;
+  --color-destructive-foreground: #ffffff;
+  --color-info: #1677ff;
+
+  /* Layout dimensions */
+  --sidebar-width: 256px;
+  --sidebar-collapsed-width: 80px;
+  --header-height: 64px;
+}
+
+/* ─── Dark Mode ──────────────────────────────────────────────────────────────
+   Activated by setting data-theme="dark" on <html> via settingsStore.
+   ────────────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-background: #0f0f0f;
+  --color-foreground: rgba(255, 255, 255, 0.85);
+  --color-surface: #1a1a1a;
+  --color-surface-raised: #242424;
+  --color-header: #1a1a1a;
+  --color-muted: #2a2a2a;
+  --color-muted-foreground: rgba(255, 255, 255, 0.45);
+  --color-border: #303030;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-background: #0f0f0f;
+    --color-foreground: rgba(255, 255, 255, 0.85);
+    --color-surface: #1a1a1a;
+    --color-surface-raised: #242424;
+    --color-header: #1a1a1a;
+    --color-muted: #2a2a2a;
+    --color-muted-foreground: rgba(255, 255, 255, 0.45);
+    --color-border: #303030;
+  }
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+}

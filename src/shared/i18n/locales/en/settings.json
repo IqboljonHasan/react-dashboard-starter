@@ -1,0 +1,17 @@
+{
+  "page": {
+    "title": "Settings"
+  },
+  "sections": {
+    "appearance": "Appearance"
+  },
+  "fields": {
+    "theme": "Theme",
+    "language": "Language"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  }
+}

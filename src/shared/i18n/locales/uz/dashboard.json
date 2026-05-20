@@ -1,0 +1,11 @@
+{
+  "page": {
+    "title": "Boshqaruv paneli"
+  },
+  "stats": {
+    "totalUsers": "Jami foydalanuvchilar",
+    "totalRevenue": "Jami daromad",
+    "activeProjects": "Faol loyihalar",
+    "pendingTasks": "Kutilayotgan vazifalar"
+  }
+}
