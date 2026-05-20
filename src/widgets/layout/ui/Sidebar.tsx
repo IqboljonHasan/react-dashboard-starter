@@ -1,26 +1,35 @@
-import {
-  BarChartOutlined,
-  DashboardOutlined,
-  SettingOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import type { MenuProps } from 'antd';
 import { Layout, Menu, Typography } from 'antd';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import type { NavRoute } from '@/app/router/navConfig';
+import { NAV_ROUTES } from '@/app/router/navConfig';
 import { useSettingsStore } from '@/entities/settings';
 import { env } from '@/shared/config/env';
-import { ROUTES } from '@/shared/config/routes';
 
 const { Sider } = Layout;
 const { Text } = Typography;
 
-const NAV_ITEMS = [
-  { key: ROUTES.DASHBOARD, icon: <DashboardOutlined />, labelKey: 'nav.dashboard' },
-  { key: ROUTES.USERS, icon: <UserOutlined />, labelKey: 'nav.users' },
-  { key: ROUTES.REPORTS, icon: <BarChartOutlined />, labelKey: 'nav.reports' },
-  { key: ROUTES.SETTINGS, icon: <SettingOutlined />, labelKey: 'nav.settings' },
-];
+type MenuItem = Required<MenuProps>['items'][number];
+
+function toMenuItems(
+  routes: NavRoute[],
+  t: (key: string) => string,
+  navigate: (path: string) => void,
+): MenuItem[] {
+  return routes
+    .filter((r) => !r.handle.hideOnSidebar)
+    .map((r) => ({
+      key: r.path,
+      icon: r.handle.icon,
+      label: t(r.handle.title),
+      ...(r.children
+        ? { children: toMenuItems(r.children, t, navigate) }
+        : { onClick: () => navigate(r.path) }),
+    }));
+}
 
 export function Sidebar() {
   const navigate = useNavigate();
@@ -28,14 +37,22 @@ export function Sidebar() {
   const { t } = useTranslation('common');
   const { sidebarCollapsed, toggleSidebar } = useSettingsStore();
 
-  const menuItems = NAV_ITEMS.map((item) => ({
-    key: item.key,
-    icon: item.icon,
-    label: t(item.labelKey),
-    onClick: () => navigate(item.key),
-  }));
+  const menuItems = toMenuItems(NAV_ROUTES, t, navigate);
 
-  const selectedKey = `/${pathname.split('/')[1]}`;
+  const parentKeysForPath = useMemo(
+    () => NAV_ROUTES.filter((r) => r.children && pathname.startsWith(r.path)).map((r) => r.path),
+    [pathname],
+  );
+
+  const [openKeys, setOpenKeys] = useState<string[]>(parentKeysForPath);
+
+  // Auto-open parent when navigating directly to a sub-route
+  useEffect(() => {
+    setOpenKeys((prev) => {
+      const missing = parentKeysForPath.filter((k) => !prev.includes(k));
+      return missing.length > 0 ? [...prev, ...missing] : prev;
+    });
+  }, [parentKeysForPath]);
 
   return (
     <Sider
@@ -48,7 +65,7 @@ export function Sidebar() {
     >
       <div className="flex items-center justify-center h-16 px-4 border-b border-white/10">
         {!sidebarCollapsed ? (
-          <Text strong className="text-white text-base truncate">
+          <Text strong className="text-base truncate text-white!">
             {env.appName}
           </Text>
         ) : (
@@ -59,7 +76,9 @@ export function Sidebar() {
       <Menu
         theme="dark"
         mode="inline"
-        selectedKeys={[selectedKey]}
+        selectedKeys={[pathname]}
+        openKeys={sidebarCollapsed ? [] : openKeys}
+        onOpenChange={setOpenKeys}
         items={menuItems}
         className="border-r-0 mt-2"
       />

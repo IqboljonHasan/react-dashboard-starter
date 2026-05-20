@@ -2,8 +2,13 @@
   "nav": {
     "dashboard": "Boshqaruv paneli",
     "users": "Foydalanuvchilar",
+    "userDetail": "Foydalanuvchi ma'lumotlari",
     "reports": "Hisobotlar",
-    "settings": "Sozlamalar"
+    "settings": "Sozlamalar",
+    "settingsAppearance": "Ko'rinish",
+    "settingsProfile": "Profil",
+    "settingsSecurity": "Xavfsizlik",
+    "settingsNotifications": "Bildirishnomalar"
   },
   "header": {
     "profile": "Profil",

@@ -2,8 +2,13 @@
   "nav": {
     "dashboard": "Dashboard",
     "users": "Users",
+    "userDetail": "User Detail",
     "reports": "Reports",
-    "settings": "Settings"
+    "settings": "Settings",
+    "settingsAppearance": "Appearance",
+    "settingsProfile": "Profile",
+    "settingsSecurity": "Security",
+    "settingsNotifications": "Notifications"
   },
   "header": {
     "profile": "Profile",
