@@ -10,11 +10,11 @@ import {
 
 import { ROUTES } from '@/shared/config/routes';
 
-import type { IRouteHandle } from './types';
+import type { RouteHandle } from './types';
 
 export interface NavRoute {
   path: string;
-  handle: IRouteHandle & Required<Pick<IRouteHandle, 'title' | 'icon'>>;
+  handle: RouteHandle & Required<Pick<RouteHandle, 'title' | 'icon'>>;
   children?: NavRoute[];
 }
 
@@ -60,7 +60,7 @@ export const navHandleMap = Object.fromEntries(NAV_ROUTES.map((r) => [r.path, r.
   NavRoute['handle']
 >;
 
-export const SUB_ROUTE_HANDLES: Record<string, IRouteHandle> = {
+export const SUB_ROUTE_HANDLES: Record<string, RouteHandle> = {
   [ROUTES.USER_DETAIL]: { title: 'nav.userDetail' },
   [ROUTES.SETTINGS_APPEARANCE]: { title: 'nav.settingsAppearance' },
   [ROUTES.SETTINGS_PROFILE]: { title: 'nav.settingsProfile' },

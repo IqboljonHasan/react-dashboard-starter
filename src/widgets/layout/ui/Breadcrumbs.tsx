@@ -2,7 +2,7 @@ import { Breadcrumb } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { Link, useMatches } from 'react-router-dom';
 
-import type { IRouteHandle } from '@/app/router/types';
+import type { RouteHandle } from '@/app/router/types';
 
 export function Breadcrumbs() {
   const matches = useMatches();
@@ -10,12 +10,12 @@ export function Breadcrumbs() {
 
   const crumbs = matches
     .filter((m) => {
-      const handle = m.handle as IRouteHandle | undefined;
+      const handle = m.handle as RouteHandle | undefined;
       return handle?.title && !handle.noBreadcrumb;
     })
     .map((m) => {
-      const handle = m.handle as IRouteHandle;
-      const label = t(handle.title!);
+      const handle = m.handle as RouteHandle;
+      const label = t(handle.breadcrumbTitle || handle.title || m.pathname);
       return {
         title: handle.breadcrumbDisabled ? label : <Link to={m.pathname}>{label}</Link>,
       };

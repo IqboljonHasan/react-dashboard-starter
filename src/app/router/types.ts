@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react';
 import type { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom';
 
-export interface IRouteHandle {
+export interface RouteHandle {
   /** i18n key used for sidebar label and breadcrumb text */
   title?: string;
+  sidebarTitle?: string;
+  breadcrumbTitle?: string;
   /** Sidebar icon */
   icon?: ReactNode;
   /** Exclude from sidebar nav */
@@ -17,12 +19,12 @@ export interface IRouteHandle {
 }
 
 interface CustomNonIndexRoute extends Omit<NonIndexRouteObject, 'children'> {
-  handle?: IRouteHandle;
+  handle?: RouteHandle;
   children?: CustomRoute[];
 }
 
 interface CustomIndexRoute extends IndexRouteObject {
-  handle?: IRouteHandle;
+  handle?: RouteHandle;
 }
 
 export type CustomRoute = CustomIndexRoute | CustomNonIndexRoute;

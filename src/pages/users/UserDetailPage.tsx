@@ -32,7 +32,7 @@ export function UserDetailPage() {
           />
           <div>
             <p className="text-lg font-semibold text-foreground">User #{id}</p>
-            <Tag color={ROLE_COLORS['viewer']}>viewer</Tag>
+            <Tag color={ROLE_COLORS.viewer}>viewer</Tag>
           </div>
         </div>
         <Descriptions column={1} bordered size="small">
@@ -57,7 +57,7 @@ export function UserDetailPage() {
             user{id}@example.com
           </Descriptions.Item>
           <Descriptions.Item label="Role">
-            <Tag color={ROLE_COLORS['viewer']}>viewer</Tag>
+            <Tag color={ROLE_COLORS.viewer}>viewer</Tag>
           </Descriptions.Item>
           <Descriptions.Item label="Status">
             <Tag color="success">Active</Tag>
