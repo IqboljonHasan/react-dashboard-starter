@@ -5,15 +5,86 @@
 
 @import "tailwindcss";
 
+/* ─── Primitive Color Scales ─────────────────────────────────────────────────
+   Raw named palettes. Semantic tokens below consume these via var().
+   Never use primitives directly in components — always go through semantics.
+   ────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Gray */
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #f0f0f0;
+  --gray-300: #d9d9d9;
+  --gray-400: #bfbfbf;
+  --gray-500: #8c8c8c;
+  --gray-600: #595959;
+  --gray-700: #434343;
+  --gray-800: #262626;
+  --gray-900: #1f1f1f;
+  --gray-950: #141414;
+
+  /* Blue */
+  --blue-50: #e6f4ff;
+  --blue-100: #bae0ff;
+  --blue-200: #91caff;
+  --blue-300: #69b1ff;
+  --blue-400: #4096ff;
+  --blue-500: #1677ff;
+  --blue-600: #0958d9;
+  --blue-700: #003eb3;
+  --blue-800: #002c8c;
+  --blue-900: #001d66;
+  --blue-950: #001029;
+
+  /* Green */
+  --green-50: #f6ffed;
+  --green-100: #d9f7be;
+  --green-200: #b7eb8f;
+  --green-300: #95de64;
+  --green-400: #73d13d;
+  --green-500: #52c41a;
+  --green-600: #389e0d;
+  --green-700: #237804;
+  --green-800: #135200;
+  --green-900: #092b00;
+  --green-950: #051800;
+
+  /* Yellow */
+  --yellow-50: #fffbe6;
+  --yellow-100: #fff1b8;
+  --yellow-200: #ffe58f;
+  --yellow-300: #ffd666;
+  --yellow-400: #ffc53d;
+  --yellow-500: #faad14;
+  --yellow-600: #d48806;
+  --yellow-700: #ad6800;
+  --yellow-800: #874d00;
+  --yellow-900: #613400;
+  --yellow-950: #3d2000;
+
+  /* Red */
+  --red-50: #fff1f0;
+  --red-100: #ffccc7;
+  --red-200: #ffa39e;
+  --red-300: #ff7875;
+  --red-400: #ff4d4f;
+  --red-500: #f5222d;
+  --red-600: #cf1322;
+  --red-700: #a8071a;
+  --red-800: #820014;
+  --red-900: #5c0011;
+  --red-950: #3a0008;
+}
+
 /* ─── Semantic Color Tokens ─────────────────────────────────────────────────
    All --color-* vars become Tailwind utility classes automatically in v4:
      bg-background, text-foreground, border-border, bg-surface, etc.
    ────────────────────────────────────────────────────────────────────────── */
 @theme {
   /* Brand */
-  --color-primary: #1677ff;
-  --color-primary-hover: #4096ff;
-  --color-primary-active: #0958d9;
+  --color-primary: var(--blue-500);
+  --color-primary-hover: var(--blue-400);
+  --color-primary-active: var(--blue-600);
   --color-primary-foreground: #ffffff;
 
   /* Semantic surfaces */
@@ -23,25 +94,25 @@
   --color-surface-raised: #ffffff;
 
   /* Sidebar / header */
-  --color-sidebar: #001529;
+  --color-sidebar: var(--blue-950);
   --color-sidebar-foreground: rgba(255, 255, 255, 0.65);
-  --color-sidebar-active: #1677ff;
+  --color-sidebar-active: var(--blue-500);
   --color-header: #ffffff;
 
   /* Semantic utility */
-  --color-muted: #f0f0f0;
+  --color-muted: var(--gray-200);
   --color-muted-foreground: rgba(0, 0, 0, 0.45);
-  --color-border: #e5e7eb;
-  --color-ring: #1677ff;
+  --color-border: var(--gray-300);
+  --color-ring: var(--blue-500);
 
   /* Status */
-  --color-success: #52c41a;
+  --color-success: var(--green-500);
   --color-success-foreground: #ffffff;
-  --color-warning: #faad14;
+  --color-warning: var(--yellow-500);
   --color-warning-foreground: #ffffff;
-  --color-destructive: #ff4d4f;
+  --color-destructive: var(--red-400);
   --color-destructive-foreground: #ffffff;
-  --color-info: #1677ff;
+  --color-info: var(--blue-500);
 
   /* Layout dimensions */
   --sidebar-width: 256px;
@@ -55,28 +126,29 @@
 [data-theme="dark"] {
   --color-background: #0f0f0f;
   --color-foreground: rgba(255, 255, 255, 0.85);
-  --color-surface: #1a1a1a;
-  --color-surface-raised: #242424;
-  --color-header: #1a1a1a;
+  --color-surface: var(--gray-900);
+  --color-surface-raised: var(--gray-800);
+  --color-header: var(--gray-900);
   --color-muted: #2a2a2a;
   --color-muted-foreground: rgba(255, 255, 255, 0.45);
-  --color-border: #303030;
+  --color-border: var(--gray-800);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --color-background: #0f0f0f;
     --color-foreground: rgba(255, 255, 255, 0.85);
-    --color-surface: #1a1a1a;
-    --color-surface-raised: #242424;
-    --color-header: #1a1a1a;
+    --color-surface: var(--gray-900);
+    --color-surface-raised: var(--gray-800);
+    --color-header: var(--gray-900);
     --color-muted: #2a2a2a;
     --color-muted-foreground: rgba(255, 255, 255, 0.45);
-    --color-border: #303030;
+    --color-border: var(--gray-800);
   }
 }
 
 @layer base {
+
   *,
   *::before,
   *::after {
