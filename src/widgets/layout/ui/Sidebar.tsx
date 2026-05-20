@@ -77,8 +77,7 @@ export function Sidebar() {
         theme="dark"
         mode="inline"
         selectedKeys={[pathname]}
-        openKeys={sidebarCollapsed ? [] : openKeys}
-        onOpenChange={setOpenKeys}
+        {...(!sidebarCollapsed && { openKeys, onOpenChange: setOpenKeys })}
         items={menuItems}
         className="border-r-0 mt-2"
       />
