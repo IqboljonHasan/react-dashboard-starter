@@ -1,0 +1,25 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Get current branch name
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Skip checks for protected branches
+if echo "$branch" | grep -Eq '^(main|master|development|production)$'; then
+  exit 0
+fi
+
+# Allow ticket to be optional, support nested paths for infra/config work
+pattern='^(feat|fix|refactor|perf|docs|test|chore|ci|hotfix|release)/([A-Z]+-[0-9]+/)?[a-z0-9-]+(/[a-z0-9-]+)?$'
+
+if ! echo "$branch" | grep -Eq "$pattern"; then
+  echo "❌ Invalid branch name: $branch"
+  echo ""
+  echo "✅ Valid formats:"
+  echo "  feat/OVIR-101/add-dashboard        → with ticket"
+  echo "  feat/add-dashboard                 → without ticket"
+  echo "  ci/infra/branch-name-config        → nested path"
+  echo ""
+  echo "📋 Types: feat, fix, refactor, perf, docs, test, chore, ci, hotfix, release"
+  exit 1
+fi
