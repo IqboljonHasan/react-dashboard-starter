@@ -74,6 +74,18 @@
   --red-800: #820014;
   --red-900: #5c0011;
   --red-950: #3a0008;
+
+  /* Brand */
+  --color-brand-50: #e6f7ff;
+  --color-brand-100: #bae7ff;
+  --color-brand-200: #91d5ff;
+  --color-brand-300: #69c0ff;
+  --color-brand-400: #40a9ff;
+  --color-brand-500: #1890ff;
+  --color-brand-600: #096dd9;
+  --color-brand-700: #003eb3;
+  --color-brand-800: #002c8c;
+  --color-brand-900: #001d66;
 }
 
 /* ─── Semantic Color Tokens ─────────────────────────────────────────────────
