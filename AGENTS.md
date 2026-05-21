@@ -2,6 +2,14 @@
 
 Instructions for AI agents (OpenAI Codex, ChatGPT, etc.) working on this codebase.
 
+## Keeping These Files Up to Date
+
+**Whenever you make a code change that affects anything documented here — architecture, conventions, patterns, fake data setup, env vars, commands, constraints — update `CLAUDE.md`, `AGENTS.md`, and `.github/copilot-instructions.md` in the same step.**
+
+This applies to: new layers or slices, new shared utilities, changed import rules, new env vars, new query/mutation patterns, changes to the fake data system, routing changes, i18n changes, and any new "never do X" rules discovered during work.
+
+All three files must stay consistent with each other and with the actual codebase.
+
 ## Project Overview
 
 React 19 + TypeScript 6 dashboard starter using **Feature-Sliced Design (FSD)** architecture.
@@ -103,7 +111,7 @@ Dark mode is activated by `data-theme="dark"` on `<html>` (managed by `settingsS
 
 ### New page with data table
 
-1. **Entity** — add types, API function, query key factory in `src/entities/<name>/`
+1. **Entity** — add types, API function, query key factory, `fakeData.ts`, and query hook in `src/entities/<name>/`
 2. **Feature** — add mutation hook in `src/features/<verb>-<noun>/model/`
 3. **Widget** — compose table + filters in `src/widgets/<name>-table/ui/`
 4. **Page** — thin composer in `src/pages/<name>/index.tsx`
@@ -174,6 +182,52 @@ const { t } = useTranslation('users');
 - Theme customization goes in `src/shared/config/antdTheme.ts`
 - Never override AntD styles with raw CSS — use `token` and `components` in `ThemeConfig`
 
+## Fake Data
+
+The project has a runtime fake-data layer for UI development without a live API.
+
+### Overview
+
+- `VITE_FAKE_DATA=true` in `.env` sets the initial state.
+- `src/shared/fake-data/model/fakeDataStore.ts` — Zustand store (`enabled` boolean), persisted to `localStorage`.
+- `src/shared/fake-data/ui/FakeDataProvider.tsx` — mounted in `<AntApp>` inside `src/app/providers/index.tsx`; only renders in `DEV` mode.
+- A **"Fake: ON / OFF"** button is fixed to the bottom-left in dev mode. Clicking it toggles the store and immediately invalidates all queries.
+
+### Query hooks
+
+Every entity query hook accepts an optional `fakeData` prop (highest priority) and falls back to the store:
+
+```ts
+// explicit override
+useStatsQuery({ fakeData: myStats })
+
+// reads store (env var sets initial value)
+useStatsQuery()
+```
+
+Priority: **explicit prop → store `enabled` → real API.**
+
+`isFake` is embedded in the `queryKey` so toggling always causes a fresh fetch.
+
+### Mutation hooks
+
+`useCreateUser`, `useUpdateUser`, `useDeleteUser` read `useFakeDataStore.getState().enabled` inside `mutationFn` — no network call when fake mode is on.
+
+### Fake data files
+
+| Entity | File |
+|---|---|
+| `dashboard-stats` | `src/entities/dashboard-stats/model/fakeData.ts` |
+| `user` | `src/entities/user/model/fakeData.ts` |
+
+`user/model/fakeData.ts` also exports `applyFakeUserFilters(params)` which handles search, role/status filtering, sorting, and pagination in-memory.
+
+### Rules
+
+1. **Type changes** — when `types.ts` gains, renames, or removes a field, update every `fakeData.ts` that references it.
+2. **Screenshots** — when a screenshot is provided showing what a screen should look like, extract realistic values from it and use them in `fakeData.ts` instead of placeholder numbers. Match field names exactly.
+3. **New entity** — create `src/entities/<name>/model/fakeData.ts`, export it from `index.ts`, add fake-data branching to the query hook, and add a row to the table above.
+
 ## Environment Variables
 
 All must be prefixed `VITE_` and typed in `src/vite-env.d.ts`:
@@ -183,6 +237,7 @@ interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string;
   readonly VITE_APP_NAME: string;
   readonly VITE_APP_VERSION: string;
+  readonly VITE_FAKE_DATA: string;   // 'true' enables fake data on startup
 }
 ```
 
@@ -194,3 +249,5 @@ interface ImportMetaEnv {
 - Do not hardcode route strings — use `ROUTES` constants
 - Do not skip `pnpm check` before committing — Biome catches type import issues and unused code
 - Do not add `console.log` statements — use proper error handling
+- Do not call `statsApi` / `userApi` directly inside widgets with a raw `useQuery` — use the entity query hooks (`useStatsQuery`, `useUsersQuery`, `useUserQuery`) so fake-data branching is respected
+- Do not let `fakeData.ts` fall out of sync with `types.ts` — update both together

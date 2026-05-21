@@ -1,5 +1,13 @@
 # CLAUDE.md
 
+## Keeping These Files Up to Date
+
+**Whenever you make a code change that affects anything documented here — architecture, conventions, patterns, fake data setup, env vars, commands, constraints — update `CLAUDE.md`, `AGENTS.md`, and `.github/copilot-instructions.md` in the same step.**
+
+This applies to: new layers or slices, new shared utilities, changed import rules, new env vars, new query/mutation patterns, changes to the fake data system, routing changes, i18n changes, and any new "never do X" rules discovered during work.
+
+All three files must stay consistent with each other and with the actual codebase.
+
 ## Project
 
 React + TypeScript dashboard starter using **Feature-Sliced Design (FSD)** architecture.
@@ -157,6 +165,54 @@ ROUTES.LOGIN / ROUTES.DASHBOARD / ROUTES.USERS / ROUTES.REPORTS / ROUTES.SETTING
 - Language detection order: `localStorage → navigator → htmlTag`
 - Switch language: `useSettingsStore().setLanguage(lang)` + `i18n.changeLanguage(lang)`
 
+## Fake Data
+
+The app has a runtime fake-data layer so the UI can be developed and demoed without a live API.
+
+### How it works
+
+- `VITE_FAKE_DATA=true` in `.env` sets the initial state; it can be overridden at runtime.
+- `src/shared/fake-data/model/fakeDataStore.ts` — Zustand store (`enabled` boolean), persisted to `localStorage` as `fake-data`.
+- `src/shared/fake-data/ui/FakeDataProvider.tsx` — mounted inside `<AntApp>` in `src/app/providers/index.tsx`; renders only when `import.meta.env.DEV`.
+- A **"Fake: ON / OFF" button** is fixed to the bottom-left of the screen in dev mode. Clicking it toggles the store and calls `queryClient.invalidateQueries()` so all data refreshes immediately.
+
+### Query hooks
+
+Every entity query hook (`useStatsQuery`, `useUsersQuery`, `useUserQuery`) accepts an optional `fakeData` prop:
+
+```ts
+// explicit override (highest priority)
+useStatsQuery({ fakeData: myCustomStats })
+
+// falls back to store when no prop is given
+useStatsQuery()
+```
+
+Priority order: **explicit `fakeData` prop → store `enabled` → real API call.**
+
+`isFake` is included in the `queryKey` so toggling always triggers a fresh fetch rather than serving stale cached data.
+
+### Mutation hooks
+
+`useCreateUser`, `useUpdateUser`, `useDeleteUser` read `useFakeDataStore.getState().enabled` at call time inside `mutationFn`. No network request is made when fake mode is on.
+
+### Fake data files
+
+| Entity | File |
+|---|---|
+| `dashboard-stats` | `src/entities/dashboard-stats/model/fakeData.ts` |
+| `user` | `src/entities/user/model/fakeData.ts` |
+
+`user/model/fakeData.ts` also exports `applyFakeUserFilters(params)` which filters, sorts, and paginates the in-memory list so URL-driven filters work in fake mode.
+
+### Keeping fake data up to date
+
+**When a TypeScript type changes** (field added, renamed, or removed), update every `fakeData.ts` that uses it so it stays assignable and representative.
+
+**When a screenshot is provided**, extract realistic values from it and use those in the fake data instead of placeholder numbers. Match field names exactly to the entity type.
+
+**When adding a new entity**, create `src/entities/<name>/model/fakeData.ts` alongside the API file, export it from the slice's `index.ts`, add fake-data branching to the query hook, and add a row to the table above.
+
 ## Adding a New Feature
 
 ### 1. Add the entity (if new business domain)
@@ -166,6 +222,8 @@ src/entities/<name>/
   api/<name>Api.ts       # Axios calls
   model/types.ts         # TypeScript interfaces
   model/<name>Keys.ts    # TanStack Query key factory
+  model/fakeData.ts      # static fake records; keep in sync with types.ts
+  model/use<Name>Query.ts  # query hook with fakeData prop + store branching
   index.ts               # export public API
 ```
 

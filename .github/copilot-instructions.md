@@ -1,5 +1,13 @@
 # GitHub Copilot Instructions
 
+## Keeping These Files Up to Date
+
+**Whenever you make a code change that affects anything documented here — architecture, conventions, patterns, fake data setup, env vars, commands, constraints — update `CLAUDE.md`, `AGENTS.md`, and `.github/copilot-instructions.md` in the same step.**
+
+This applies to: new layers or slices, new shared utilities, changed import rules, new env vars, new query/mutation patterns, changes to the fake data system, routing changes, i18n changes, and any new "never do X" rules discovered during work.
+
+All three files must stay consistent with each other and with the actual codebase.
+
 ## Project Context
 
 React 19 + TypeScript 6 dashboard using **Feature-Sliced Design (FSD)**.
@@ -80,14 +88,19 @@ export function ProductFilters() {
 
 ### Table with URL pagination
 
+Use the entity query hook, not a raw `useQuery` + API call. The hook handles fake-data branching internally:
+
 ```ts
 const [page, setPage]         = useQueryState('page', parseAsInteger.withDefault(1));
 const [pageSize, setPageSize] = useQueryState('pageSize', parseAsInteger.withDefault(20));
 
+// ✅ correct — fake-data branching is handled inside the hook
+const { data, isFetching } = useUsersQuery({ page, pageSize, ...filters });
+
+// ❌ wrong — bypasses fake-data layer
 const { data, isFetching } = useQuery({
-  queryKey: productKeys.list({ page, pageSize, ...filters }),
-  queryFn: () => productApi.list({ page, pageSize, ...filters }),
-  placeholderData: (prev) => prev,  // keeps old rows visible during page transitions
+  queryKey: userKeys.list({ page, pageSize, ...filters }),
+  queryFn: () => userApi.list({ page, pageSize, ...filters }),
 });
 ```
 
@@ -153,6 +166,46 @@ Available tokens: `background`, `foreground`, `surface`, `surface-raised`, `side
 `sidebar-foreground`, `header`, `muted`, `muted-foreground`, `border`, `ring`,
 `primary`, `primary-foreground`, `success`, `warning`, `destructive`, `destructive-foreground`.
 
+## Fake Data
+
+The project has a runtime fake-data layer so the UI works without a live API.
+
+### How it works
+
+- `VITE_FAKE_DATA=true` sets the initial state. Persisted to `localStorage` as `fake-data`.
+- `src/shared/fake-data/` — Zustand store + toggle button (fixed bottom-left, dev only).
+- Toggling calls `queryClient.invalidateQueries()` so all data refreshes immediately.
+
+### Query hook pattern
+
+Every entity exposes a query hook with an optional `fakeData` prop:
+
+```ts
+// priority: explicit prop > store enabled > real API
+useStatsQuery({ fakeData: myStats })   // override
+useStatsQuery()                         // reads store
+```
+
+`isFake` is part of the `queryKey` so toggling always causes a fresh fetch.
+
+### Mutation hooks
+
+Read `useFakeDataStore.getState().enabled` inside `mutationFn` at call time — no network request when fake mode is on.
+
+### Fake data files
+
+| Entity | Fake data file |
+|---|---|
+| `dashboard-stats` | `src/entities/dashboard-stats/model/fakeData.ts` |
+| `user` | `src/entities/user/model/fakeData.ts` |
+
+### Rules
+
+1. **Type changes** — update `fakeData.ts` whenever `types.ts` changes.
+2. **Screenshots provided** — extract realistic values from the screenshot and use them in `fakeData.ts`; match field names exactly to the entity type.
+3. **New entity** — always create `fakeData.ts` alongside `types.ts` and wire fake-data branching into the query hook.
+4. **Never call the raw API inside widgets** — always go through the entity query hook so fake-data branching is respected.
+
 ## File Naming & Location
 
 When adding a new domain `product`:
@@ -162,6 +215,8 @@ src/entities/product/
   api/productApi.ts
   model/types.ts
   model/productKeys.ts
+  model/fakeData.ts        (fake records; keep in sync with types.ts)
+  model/useProductQuery.ts (query hook with fakeData prop + store branching)
   ui/ProductBadge.tsx      (optional small display component)
   index.ts                 (re-export public API only)
 
