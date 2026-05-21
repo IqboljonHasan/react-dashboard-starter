@@ -1,26 +1,32 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { App } from 'antd';
 import { useTranslation } from 'react-i18next';
-
+import type { User } from '@/entities/user';
 import { userApi, userKeys } from '@/entities/user';
 import { useFakeDataStore } from '@/shared/fake-data';
 
-export function useDeleteUser() {
+export function useCreateUser() {
   const qc = useQueryClient();
   const { message } = App.useApp();
   const { t } = useTranslation('users');
 
   return useMutation({
-    mutationFn: (id: string) => {
-      if (useFakeDataStore.getState().enabled) return Promise.resolve();
-      return userApi.delete(id);
+    mutationFn: (payload: Omit<User, 'id' | 'createdAt'>) => {
+      if (useFakeDataStore.getState().enabled) {
+        return Promise.resolve<User>({
+          ...payload,
+          id: crypto.randomUUID(),
+          createdAt: new Date().toISOString(),
+        });
+      }
+      return userApi.create(payload);
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: userKeys.lists() });
-      message.success(t('deleteSuccess'));
+      message.success(t('createSuccess'));
     },
     onError: () => {
-      message.error(t('deleteError'));
+      message.error(t('createError'));
     },
   });
 }

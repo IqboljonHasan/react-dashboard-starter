@@ -4,20 +4,15 @@ import {
   ProjectOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { useQuery } from '@tanstack/react-query';
 import { Col, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
 
-import { statsApi, statsKeys } from '@/entities/dashboard-stats';
+import { useStatsQuery } from '@/entities/dashboard-stats';
 import { StatsCard } from './StatsCard';
 
 export function StatsOverview() {
   const { t } = useTranslation('dashboard');
-  const { data: stats, isLoading } = useQuery({
-    queryKey: statsKeys.stats(),
-    queryFn: statsApi.getStats,
-    refetchInterval: 60_000,
-  });
+  const { data: stats, isLoading } = useStatsQuery();
 
   return (
     <Row gutter={[16, 16]}>

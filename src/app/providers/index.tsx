@@ -8,6 +8,7 @@ import { RouterProvider } from 'react-router-dom';
 import { useSettingsStore } from '@/entities/settings';
 import { queryClient } from '@/shared/api/queryClient';
 import { antdDarkTheme, antdTheme } from '@/shared/config/antdTheme';
+import { FakeDataProvider } from '@/shared/fake-data';
 import { LoadingScreen } from '@/shared/ui/LoadingScreen';
 import { router } from '../router';
 
@@ -45,6 +46,7 @@ function AppProviders() {
             <RouterProvider router={router} />
           </Suspense>
         </NuqsAdapter>
+        <FakeDataProvider />
       </AntApp>
     </ConfigProvider>
   );

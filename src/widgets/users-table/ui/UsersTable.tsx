@@ -1,11 +1,10 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { useQuery } from '@tanstack/react-query';
 import type { TableProps } from 'antd';
 import { Button, Popconfirm, Space, Table, Tag, Typography } from 'antd';
 import { parseAsInteger, parseAsString, parseAsStringEnum, useQueryState } from 'nuqs';
 import { useTranslation } from 'react-i18next';
 import type { User, UserRole, UserStatus } from '@/entities/user';
-import { UserAvatar, userApi, userKeys } from '@/entities/user';
+import { UserAvatar, useUsersQuery } from '@/entities/user';
 import { useDeleteUser } from '@/features/user-delete';
 import dayjs from '@/shared/lib/dayjs';
 
@@ -33,27 +32,14 @@ export function UsersTable() {
   const [role] = useQueryState('role', roleParser);
   const [status] = useQueryState('status', statusParser);
 
-  const { data, isFetching } = useQuery({
-    queryKey: userKeys.list({
-      page,
-      pageSize,
-      search,
-      role,
-      status,
-      sortBy: 'createdAt',
-      sortOrder: 'desc',
-    }),
-    queryFn: () =>
-      userApi.list({
-        page,
-        pageSize,
-        search,
-        role,
-        status,
-        sortBy: 'createdAt',
-        sortOrder: 'desc',
-      }),
-    placeholderData: (prev) => prev,
+  const { data, isFetching } = useUsersQuery({
+    page,
+    pageSize,
+    search,
+    role,
+    status,
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
   });
 
   const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();

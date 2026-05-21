@@ -16,6 +16,7 @@ export default defineConfig({
         changeOrigin: true,
       },
     },
+    allowedHosts: ['quiet-cedar-9da02f24.tunnl.gg'],
   },
   build: {
     sourcemap: true,
