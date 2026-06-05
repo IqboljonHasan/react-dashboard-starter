@@ -16,6 +16,7 @@ import { router } from '../router';
 function ThemeSync() {
   const theme = useSettingsStore((s) => s.theme);
   const colorTheme = useSettingsStore((s) => s.colorTheme);
+  const motionEnabled = useSettingsStore((s) => s.motionEnabled);
 
   useEffect(() => {
     const isDark =
@@ -23,6 +24,10 @@ function ThemeSync() {
       (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-motion', motionEnabled ? 'on' : 'off');
+  }, [motionEnabled]);
 
   useEffect(() => {
     const preset = getThemePreset(colorTheme);

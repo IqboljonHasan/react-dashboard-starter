@@ -73,7 +73,7 @@ export function SettingsButton() {
         onPointerUp={handlePointerUp}
         className="fixed z-9999 flex items-center justify-center rounded-full text-primary-foreground shadow-lg transition-shadow hover:shadow-xl"
         style={{
-          left: pos.x,
+          left: 16,
           top: pos.y,
           width: SIZE,
           height: SIZE,
@@ -82,10 +82,7 @@ export function SettingsButton() {
           touchAction: 'none',
         }}
       >
-        <SettingOutlined
-          className="text-xl"
-          style={{ animation: 'settings-spin 4s linear infinite' }}
-        />
+        <SettingOutlined className="settings-gear text-xl" />
       </button>
       <SettingsModal open={open} onClose={() => setOpen(false)} />
     </>

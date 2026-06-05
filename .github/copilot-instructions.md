@@ -24,6 +24,7 @@ Monorepo-free single app at `src/` with strict layer-based architecture.
 - **i18n**: i18next + react-i18next, namespaces: `common auth dashboard users settings`
 - **Lint/Format**: Biome 2 (replaces ESLint + Prettier)
 - **Dates**: Day.js with `relativeTime`, `localizedFormat`, `utc`, `timezone`, `duration`
+- **Animations**: Motion 12 (Framer Motion), toggled via `settingsStore.motionEnabled`
 
 ## FSD Layer Structure
 
@@ -174,7 +175,15 @@ Four accent presets (`default`, `violet`, `emerald`, `sunset`) live in
 CSS vars and the AntD `colorPrimary` token. Add a preset by appending to `THEME_PRESETS`.
 `SettingsButton` (in `features/settings-form`) is a floating, draggable spinning-gear button mounted
 at the app root in `app/providers`; clicking it opens `SettingsModal`, which exposes color theme,
-mode, language, and the fake-data toggle.
+mode, language, a motion toggle, and the fake-data toggle.
+
+### Motion / animations
+
+Uses `motion` (Framer Motion), governed by the persisted `settingsStore.motionEnabled` flag (toggled in
+the settings modal). `PageTransition` (`shared/ui/PageTransition.tsx`) wraps the routed `<Outlet />` in
+`DashboardLayout` and takes an `enabled` prop — pass `motionEnabled`; when `false` it renders children
+with no animation. CSS animations (e.g. `.settings-gear` spin) are gated by `[data-motion="off"]` on
+`<html>`, set by `ThemeSync`. Keep shared animation components settings-agnostic via an `enabled` prop.
 
 ## Fake Data
 

@@ -185,9 +185,18 @@
   }
 }
 
-/* Continuous rotation for the floating settings button icon. */
+/* Continuous rotation for the floating settings button icon.
+   Governed by the motion toggle via [data-motion] on <html>. */
 @keyframes settings-spin {
   to {
     transform: rotate(360deg);
   }
+}
+
+.settings-gear {
+  animation: settings-spin 4s linear infinite;
+}
+
+[data-motion="off"] .settings-gear {
+  animation: none;
 }

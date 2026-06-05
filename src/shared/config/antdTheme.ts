@@ -47,5 +47,9 @@ export const antdDarkTheme: ThemeConfig = {
       headerBg: '#1a1a1a',
       bodyBg: '#0f0f0f',
     },
+    Table: {
+      headerBg: '#262626',
+      rowHoverBg: 'rgba(255, 255, 255, 0.06)',
+    },
   },
 };

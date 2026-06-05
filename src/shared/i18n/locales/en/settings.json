@@ -9,9 +9,11 @@
     "theme": "Theme",
     "colorTheme": "Color theme",
     "language": "Language",
+    "motion": "Motion",
     "fakeData": "Fake data"
   },
   "hints": {
+    "motion": "Animate page transitions and UI motion",
     "fakeData": "Serve in-memory demo data instead of the API"
   },
   "theme": {

@@ -23,5 +23,5 @@ export function Breadcrumbs() {
 
   if (crumbs.length === 0) return null;
 
-  return <Breadcrumb items={crumbs} className="mb-4" />;
+  return <Breadcrumb items={crumbs} />;
 }

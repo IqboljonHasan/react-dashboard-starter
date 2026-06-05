@@ -41,6 +41,7 @@ pnpm format       # format only
 | Biome | 2 | Lint + format |
 | Day.js | 1 | Dates |
 | i18next | 26 | i18n (en + uz) |
+| Motion | 12 | Animations (page transitions) |
 
 ## FSD Architecture
 
@@ -127,8 +128,21 @@ preset**, append to `THEME_PRESETS` — the settings modal swatches render from 
 with a continuously spinning gear icon (`@keyframes settings-spin` in `app/styles/index.css`). It is
 mounted once at the app root in `src/app/providers/index.tsx` (not in the header), positioned bottom-right
 via pointer-drag with click-vs-drag detection. Clicking it opens `SettingsModal`, which exposes
-color-theme swatches, light/dark/system mode, language, and the fake-data toggle (which calls
-`queryClient.invalidateQueries()` on change).
+color-theme swatches, light/dark/system mode, language, a **motion** toggle, and the fake-data toggle
+(which calls `queryClient.invalidateQueries()` on change).
+
+### Motion / animations
+
+Powered by `motion` (Framer Motion). A persisted `useSettingsStore().motionEnabled` flag (default
+`true`) governs all animation, toggled from the settings modal.
+
+- **Page transitions** — `src/shared/ui/PageTransition.tsx` is a generic motion wrapper (fade + slide,
+  keyed by route) with an `enabled` prop; when `false` it renders children with no animation. Wired in
+  `widgets/layout/DashboardLayout` around `<Outlet />`, keyed on `location.pathname`.
+- **CSS animations** (e.g. the settings gear spin, `.settings-gear`) are gated by `[data-motion="off"]`
+  on `<html>`, which `ThemeSync` in `app/providers` sets from `motionEnabled`.
+- New animated UI: prefer `motion` components and pass the `motionEnabled` flag down (shared components
+  stay settings-agnostic via an `enabled` prop), or gate CSS keyframes with `[data-motion="off"]`.
 
 ## State Management
 

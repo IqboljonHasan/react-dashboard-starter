@@ -23,7 +23,8 @@
     "delete": "Delete",
     "edit": "Edit",
     "create": "Create",
-    "search": "Search"
+    "search": "Search",
+    "back": "Back"
   },
   "status": {
     "loading": "Loading...",

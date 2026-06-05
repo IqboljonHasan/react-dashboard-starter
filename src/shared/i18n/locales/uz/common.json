@@ -23,7 +23,8 @@
     "delete": "O'chirish",
     "edit": "Tahrirlash",
     "create": "Yaratish",
-    "search": "Qidirish"
+    "search": "Qidirish",
+    "back": "Orqaga"
   },
   "status": {
     "loading": "Yuklanmoqda...",

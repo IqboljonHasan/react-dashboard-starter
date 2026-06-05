@@ -85,7 +85,7 @@ through the public index re-export.
 | `src/shared/config/antdTheme.ts` | Ant Design v5 theme tokens (light + dark) |
 | `src/shared/i18n/index.ts` | i18next init with lazy `resourcesToBackend` |
 | `src/entities/session/model/sessionStore.ts` | Zustand auth store (tokens, user, isAuthenticated) |
-| `src/entities/settings/model/settingsStore.ts` | Zustand settings store (theme, language, sidebarCollapsed) |
+| `src/entities/settings/model/settingsStore.ts` | Zustand settings store (theme, colorTheme, language, sidebarCollapsed, motionEnabled) |
 | `src/entities/user/model/userKeys.ts` | TanStack Query key factory for users |
 
 ## Semantic Tailwind Classes
@@ -113,7 +113,13 @@ Color themes (accent presets) are independent of light/dark mode. Four presets (
 `colorPrimary` token. Add a preset by appending to `THEME_PRESETS` — the settings modal swatches
 update automatically. `SettingsButton` (in `src/features/settings-form`) is a floating, draggable
 spinning-gear button mounted at the app root in `app/providers`; clicking it opens `SettingsModal`,
-which exposes color theme, mode, language, and the fake-data toggle.
+which exposes color theme, mode, language, a motion toggle, and the fake-data toggle.
+
+Animations use `motion` (Framer Motion), governed by the persisted `settingsStore.motionEnabled` flag.
+`PageTransition` (`src/shared/ui/PageTransition.tsx`) wraps the routed `<Outlet />` in
+`DashboardLayout` (fade + slide keyed on pathname) and takes an `enabled` prop. CSS animations like the
+gear spin (`.settings-gear`) are gated by `[data-motion="off"]` on `<html>`, set by `ThemeSync`. Keep
+shared animation components settings-agnostic (pass `enabled` down) rather than importing the store.
 
 ## Adding New Pages / Features
 

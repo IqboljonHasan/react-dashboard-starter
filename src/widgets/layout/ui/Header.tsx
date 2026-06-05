@@ -1,4 +1,5 @@
 import {
+  ArrowLeftOutlined,
   BellOutlined,
   BgColorsOutlined,
   GlobalOutlined,
@@ -6,7 +7,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Avatar, Badge, Dropdown, Layout, Space, Typography } from 'antd';
+import { Avatar, Badge, Button, Dropdown, Layout, Space, Tooltip, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,6 +15,7 @@ import { useSessionStore } from '@/entities/session';
 import type { Language, Theme } from '@/entities/settings';
 import { useSettingsStore } from '@/entities/settings';
 import { ROUTES } from '@/shared/config/routes';
+import { Breadcrumbs } from './Breadcrumbs';
 
 const { Header: AntHeader } = Layout;
 const { Text } = Typography;
@@ -75,10 +77,21 @@ export function Header() {
 
   return (
     <AntHeader
-      className="sticky top-0 z-50 flex items-center justify-between px-6 border-b border-border shadow-sm"
+      className="sticky top-0 z-50 flex items-center justify-between px-6! border-b border-border shadow-sm"
       style={{ backgroundColor: 'var(--color-header)', height: 64 }}
     >
-      <div />
+      <Space size="middle" className="min-w-0">
+        <Tooltip title={t('actions.back')}>
+          <Button
+            type="text"
+            shape="circle"
+            aria-label={t('actions.back')}
+            icon={<ArrowLeftOutlined />}
+            onClick={() => navigate(-1)}
+          />
+        </Tooltip>
+        <Breadcrumbs />
+      </Space>
 
       <Space size="middle">
         <Dropdown menu={{ items: themeItems, selectedKeys: [theme] }} placement="bottomRight">

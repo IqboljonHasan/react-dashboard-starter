@@ -17,7 +17,16 @@ interface SettingsModalProps {
 
 export function SettingsModal({ open, onClose }: SettingsModalProps) {
   const { t, i18n } = useTranslation('settings');
-  const { theme, colorTheme, language, setTheme, setColorTheme, setLanguage } = useSettingsStore();
+  const {
+    theme,
+    colorTheme,
+    language,
+    motionEnabled,
+    setTheme,
+    setColorTheme,
+    setLanguage,
+    setMotionEnabled,
+  } = useSettingsStore();
   const { enabled: fakeEnabled, toggle: toggleFake } = useFakeDataStore();
 
   const handleLanguageChange = (lang: Language) => {
@@ -87,6 +96,14 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
         </div>
 
         <Divider className="my-0" />
+
+        <div className="flex items-center justify-between">
+          <div>
+            <Text className="block text-foreground">{t('fields.motion')}</Text>
+            <Text className="text-xs text-muted-foreground">{t('hints.motion')}</Text>
+          </div>
+          <Switch checked={motionEnabled} onChange={setMotionEnabled} />
+        </div>
 
         <div className="flex items-center justify-between">
           <div>

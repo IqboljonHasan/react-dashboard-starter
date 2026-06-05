@@ -9,9 +9,11 @@
     "theme": "Mavzu",
     "colorTheme": "Rang mavzusi",
     "language": "Til",
+    "motion": "Animatsiya",
     "fakeData": "Soxta ma'lumot"
   },
   "hints": {
+    "motion": "Sahifa o'tishlari va interfeys animatsiyalari",
     "fakeData": "API o'rniga xotiradagi demo ma'lumotlardan foydalanish"
   },
   "theme": {
