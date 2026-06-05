@@ -7,7 +7,12 @@
   },
   "fields": {
     "theme": "Mavzu",
-    "language": "Til"
+    "colorTheme": "Rang mavzusi",
+    "language": "Til",
+    "fakeData": "Soxta ma'lumot"
+  },
+  "hints": {
+    "fakeData": "API o'rniga xotiradagi demo ma'lumotlardan foydalanish"
   },
   "theme": {
     "light": "Yorug'",

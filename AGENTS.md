@@ -107,6 +107,14 @@ and automatically become Tailwind utilities via TailwindCSS v4.
 
 Dark mode is activated by `data-theme="dark"` on `<html>` (managed by `settingsStore`).
 
+Color themes (accent presets) are independent of light/dark mode. Four presets (`default`,
+`violet`, `emerald`, `sunset`) live in `src/shared/config/themePresets.ts`; the active one is
+`settingsStore.colorTheme`. `ThemeSync` writes the preset's `--color-primary*` CSS vars and the AntD
+`colorPrimary` token. Add a preset by appending to `THEME_PRESETS` — the settings modal swatches
+update automatically. `SettingsButton` (in `src/features/settings-form`) is a floating, draggable
+spinning-gear button mounted at the app root in `app/providers`; clicking it opens `SettingsModal`,
+which exposes color theme, mode, language, and the fake-data toggle.
+
 ## Adding New Pages / Features
 
 ### New page with data table

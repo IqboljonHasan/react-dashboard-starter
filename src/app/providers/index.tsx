@@ -6,14 +6,16 @@ import { Suspense, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 
 import { useSettingsStore } from '@/entities/settings';
+import { SettingsButton } from '@/features/settings-form';
 import { queryClient } from '@/shared/api/queryClient';
 import { antdDarkTheme, antdTheme } from '@/shared/config/antdTheme';
-import { FakeDataProvider } from '@/shared/fake-data';
+import { getThemePreset } from '@/shared/config/themePresets';
 import { LoadingScreen } from '@/shared/ui/LoadingScreen';
 import { router } from '../router';
 
 function ThemeSync() {
   const theme = useSettingsStore((s) => s.theme);
+  const colorTheme = useSettingsStore((s) => s.colorTheme);
 
   useEffect(() => {
     const isDark =
@@ -22,20 +24,35 @@ function ThemeSync() {
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   }, [theme]);
 
+  useEffect(() => {
+    const preset = getThemePreset(colorTheme);
+    const root = document.documentElement;
+    root.style.setProperty('--color-primary', preset.primary);
+    root.style.setProperty('--color-primary-hover', preset.primaryHover);
+    root.style.setProperty('--color-primary-active', preset.primaryActive);
+    root.style.setProperty('--color-ring', preset.primary);
+  }, [colorTheme]);
+
   return null;
 }
 
 function AppProviders() {
   const theme = useSettingsStore((s) => s.theme);
+  const colorTheme = useSettingsStore((s) => s.colorTheme);
   const isDark =
     theme === 'dark' ||
     (theme === 'system' &&
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-  const activeTheme = isDark
+  const preset = getThemePreset(colorTheme);
+  const baseTheme = isDark
     ? { ...antdDarkTheme, algorithm: antdAlgorithm.darkAlgorithm }
     : antdTheme;
+  const activeTheme = {
+    ...baseTheme,
+    token: { ...baseTheme.token, colorPrimary: preset.primary, colorInfo: preset.primary },
+  };
 
   return (
     <ConfigProvider theme={activeTheme}>
@@ -46,7 +63,7 @@ function AppProviders() {
             <RouterProvider router={router} />
           </Suspense>
         </NuqsAdapter>
-        <FakeDataProvider />
+        <SettingsButton />
       </AntApp>
     </ConfigProvider>
   );

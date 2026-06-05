@@ -112,6 +112,24 @@ text-destructive       text-destructive-foreground
 Controlled by `data-theme="dark"` on `<html>`, set reactively in `src/app/providers/index.tsx`
 from `useSettingsStore().theme`. System preference also respected via `@media (prefers-color-scheme: dark)`.
 
+### Color themes (accent presets)
+
+Independent of light/dark mode. Four presets (`default`, `violet`, `emerald`, `sunset`) are
+defined in `src/shared/config/themePresets.ts` (`THEME_PRESETS`, `ColorTheme`, `getThemePreset`).
+The active preset lives in `useSettingsStore().colorTheme` (persisted). `ThemeSync` in
+`src/app/providers/index.tsx` writes the preset's `--color-primary*` / `--color-ring` CSS vars on
+`<html>` and feeds `colorPrimary`/`colorInfo` into the AntD `ConfigProvider` token. **To add a
+preset**, append to `THEME_PRESETS` — the settings modal swatches render from that list automatically.
+
+### General settings modal
+
+`SettingsButton` (both in `src/features/settings-form`) is a **floating, draggable** circular button
+with a continuously spinning gear icon (`@keyframes settings-spin` in `app/styles/index.css`). It is
+mounted once at the app root in `src/app/providers/index.tsx` (not in the header), positioned bottom-right
+via pointer-drag with click-vs-drag detection. Clicking it opens `SettingsModal`, which exposes
+color-theme swatches, light/dark/system mode, language, and the fake-data toggle (which calls
+`queryClient.invalidateQueries()` on change).
+
 ## State Management
 
 ### Server state — TanStack Query

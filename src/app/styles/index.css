@@ -184,3 +184,10 @@
     min-height: 100vh;
   }
 }
+
+/* Continuous rotation for the floating settings button icon. */
+@keyframes settings-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

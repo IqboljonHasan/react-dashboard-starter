@@ -7,7 +7,12 @@
   },
   "fields": {
     "theme": "Theme",
-    "language": "Language"
+    "colorTheme": "Color theme",
+    "language": "Language",
+    "fakeData": "Fake data"
+  },
+  "hints": {
+    "fakeData": "Serve in-memory demo data instead of the API"
   },
   "theme": {
     "light": "Light",

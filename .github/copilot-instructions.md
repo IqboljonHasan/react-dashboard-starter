@@ -166,6 +166,16 @@ Available tokens: `background`, `foreground`, `surface`, `surface-raised`, `side
 `sidebar-foreground`, `header`, `muted`, `muted-foreground`, `border`, `ring`,
 `primary`, `primary-foreground`, `success`, `warning`, `destructive`, `destructive-foreground`.
 
+### Color themes (accent presets)
+
+Four accent presets (`default`, `violet`, `emerald`, `sunset`) live in
+`src/shared/config/themePresets.ts` and are independent of light/dark mode. The active one is
+`settingsStore.colorTheme`; `ThemeSync` (in `app/providers`) writes the preset's `--color-primary*`
+CSS vars and the AntD `colorPrimary` token. Add a preset by appending to `THEME_PRESETS`.
+`SettingsButton` (in `features/settings-form`) is a floating, draggable spinning-gear button mounted
+at the app root in `app/providers`; clicking it opens `SettingsModal`, which exposes color theme,
+mode, language, and the fake-data toggle.
+
 ## Fake Data
 
 The project has a runtime fake-data layer so the UI works without a live API.
