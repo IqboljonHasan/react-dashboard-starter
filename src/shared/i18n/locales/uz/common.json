@@ -24,7 +24,9 @@
     "edit": "Tahrirlash",
     "create": "Yaratish",
     "search": "Qidirish",
-    "back": "Orqaga"
+    "back": "Orqaga",
+    "collapse": "Yon panelni yig'ish",
+    "expand": "Yon panelni ochish"
   },
   "status": {
     "loading": "Yuklanmoqda...",

@@ -24,7 +24,9 @@
     "edit": "Edit",
     "create": "Create",
     "search": "Search",
-    "back": "Back"
+    "back": "Back",
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar"
   },
   "status": {
     "loading": "Loading...",
