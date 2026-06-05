@@ -11,6 +11,7 @@ import {
   SecurityPage,
   SettingsLayout,
 } from '@/pages/settings';
+import { ComponentsPage, IconsPage, UiLayout } from '@/pages/ui';
 import { UserDetailPage, UsersPage } from '@/pages/users';
 import { ROUTES } from '@/shared/config/routes';
 import { DashboardLayout } from '@/widgets/layout';
@@ -54,6 +55,25 @@ const routeConfig: CustomRoute[] = [
           },
 
           { path: ROUTES.REPORTS, element: <ReportsPage />, handle: navHandleMap[ROUTES.REPORTS] },
+
+          {
+            path: ROUTES.UI,
+            element: <UiLayout />,
+            handle: navHandleMap[ROUTES.UI],
+            children: [
+              { index: true, element: <Navigate to={ROUTES.UI_COMPONENTS} replace /> },
+              {
+                path: 'components',
+                element: <ComponentsPage />,
+                handle: SUB_ROUTE_HANDLES[ROUTES.UI_COMPONENTS],
+              },
+              {
+                path: 'icons',
+                element: <IconsPage />,
+                handle: SUB_ROUTE_HANDLES[ROUTES.UI_ICONS],
+              },
+            ],
+          },
 
           {
             path: ROUTES.SETTINGS,

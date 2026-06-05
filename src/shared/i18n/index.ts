@@ -15,7 +15,7 @@ i18n
     fallbackLng: 'en',
     supportedLngs: ['en', 'uz'],
     defaultNS: 'common',
-    ns: ['common', 'auth', 'dashboard', 'users', 'settings'],
+    ns: ['common', 'auth', 'dashboard', 'users', 'settings', 'ui'],
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],

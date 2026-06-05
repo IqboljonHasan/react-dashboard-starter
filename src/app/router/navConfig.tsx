@@ -1,10 +1,12 @@
 import {
+  AppstoreOutlined,
   BarChartOutlined,
   BellOutlined,
   BgColorsOutlined,
   DashboardOutlined,
   LockOutlined,
   SettingOutlined,
+  SmileOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 
@@ -30,6 +32,20 @@ export const NAV_ROUTES: NavRoute[] = [
   {
     path: ROUTES.REPORTS,
     handle: { title: 'nav.reports', icon: <BarChartOutlined /> },
+  },
+  {
+    path: ROUTES.UI,
+    handle: { title: 'nav.ui', icon: <AppstoreOutlined /> },
+    children: [
+      {
+        path: ROUTES.UI_COMPONENTS,
+        handle: { title: 'nav.uiComponents', icon: <AppstoreOutlined /> },
+      },
+      {
+        path: ROUTES.UI_ICONS,
+        handle: { title: 'nav.uiIcons', icon: <SmileOutlined /> },
+      },
+    ],
   },
   {
     path: ROUTES.SETTINGS,
@@ -62,6 +78,8 @@ export const navHandleMap = Object.fromEntries(NAV_ROUTES.map((r) => [r.path, r.
 
 export const SUB_ROUTE_HANDLES: Record<string, RouteHandle> = {
   [ROUTES.USER_DETAIL]: { title: 'nav.userDetail' },
+  [ROUTES.UI_COMPONENTS]: { title: 'nav.uiComponents' },
+  [ROUTES.UI_ICONS]: { title: 'nav.uiIcons' },
   [ROUTES.SETTINGS_APPEARANCE]: { title: 'nav.settingsAppearance' },
   [ROUTES.SETTINGS_PROFILE]: { title: 'nav.settingsProfile' },
   [ROUTES.SETTINGS_SECURITY]: { title: 'nav.settingsSecurity' },

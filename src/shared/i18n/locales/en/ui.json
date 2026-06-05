@@ -1,0 +1,69 @@
+{
+  "components": {
+    "title": "Components",
+    "description": "A showcase of the Ant Design components used across this dashboard, themed with the project's semantic tokens.",
+    "sections": {
+      "buttons": "Buttons",
+      "inputs": "Inputs",
+      "selection": "Selection controls",
+      "feedback": "Feedback",
+      "dataDisplay": "Data display",
+      "navigation": "Navigation",
+      "table": "Table"
+    },
+    "actions": {
+      "primary": "Primary",
+      "default": "Default",
+      "dashed": "Dashed",
+      "text": "Text",
+      "link": "Link",
+      "danger": "Danger",
+      "loading": "Loading",
+      "disabled": "Disabled",
+      "optionA": "Option A",
+      "optionB": "Option B",
+      "optionC": "Option C"
+    },
+    "placeholders": {
+      "text": "Basic text input",
+      "password": "Password",
+      "search": "Search..."
+    },
+    "alerts": {
+      "success": "Operation completed successfully.",
+      "info": "Here is some neutral information.",
+      "warning": "Double-check before continuing.",
+      "error": "Something went wrong."
+    },
+    "tabs": {
+      "overview": "Overview",
+      "activity": "Activity",
+      "settings": "Settings"
+    },
+    "dividerNote": "Dividers and avatars help structure dense content.",
+    "table": {
+      "name": "Name",
+      "role": "Role",
+      "status": "Status",
+      "active": "Active",
+      "invited": "Invited"
+    }
+  },
+  "icons": {
+    "tabs": {
+      "antd": "Ant Design icons",
+      "huge": "Huge Icons library"
+    },
+    "shape": {
+      "round": "Round",
+      "sharp": "Sharp"
+    },
+    "variant": {
+      "solid": "Solid",
+      "stroke": "Stroke",
+      "duotone": "Duotone",
+      "twotone": "Twotone"
+    },
+    "copyHint": "Click to copy import for {{name}}"
+  }
+}

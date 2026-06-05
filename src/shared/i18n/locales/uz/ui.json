@@ -1,0 +1,69 @@
+{
+  "components": {
+    "title": "Komponentlar",
+    "description": "Ushbu boshqaruv panelida ishlatiladigan Ant Design komponentlari to'plami, loyihaning semantik ranglari bilan bezatilgan.",
+    "sections": {
+      "buttons": "Tugmalar",
+      "inputs": "Kiritish maydonlari",
+      "selection": "Tanlash boshqaruvlari",
+      "feedback": "Bildirishnomalar",
+      "dataDisplay": "Ma'lumotlarni ko'rsatish",
+      "navigation": "Navigatsiya",
+      "table": "Jadval"
+    },
+    "actions": {
+      "primary": "Asosiy",
+      "default": "Oddiy",
+      "dashed": "Punktir",
+      "text": "Matn",
+      "link": "Havola",
+      "danger": "Xavfli",
+      "loading": "Yuklanmoqda",
+      "disabled": "O'chirilgan",
+      "optionA": "A varianti",
+      "optionB": "B varianti",
+      "optionC": "C varianti"
+    },
+    "placeholders": {
+      "text": "Oddiy matn maydoni",
+      "password": "Parol",
+      "search": "Qidirish..."
+    },
+    "alerts": {
+      "success": "Amal muvaffaqiyatli yakunlandi.",
+      "info": "Mana ba'zi neytral ma'lumotlar.",
+      "warning": "Davom etishdan oldin tekshiring.",
+      "error": "Nimadir xato ketdi."
+    },
+    "tabs": {
+      "overview": "Umumiy ko'rinish",
+      "activity": "Faollik",
+      "settings": "Sozlamalar"
+    },
+    "dividerNote": "Ajratgichlar va avatarlar zich kontentni tartibga solishga yordam beradi.",
+    "table": {
+      "name": "Ism",
+      "role": "Rol",
+      "status": "Holat",
+      "active": "Faol",
+      "invited": "Taklif qilingan"
+    }
+  },
+  "icons": {
+    "tabs": {
+      "antd": "Ant Design belgilari",
+      "huge": "Huge Icons kutubxonasi"
+    },
+    "shape": {
+      "round": "Yumaloq",
+      "sharp": "O'tkir"
+    },
+    "variant": {
+      "solid": "To'ldirilgan",
+      "stroke": "Chiziqli",
+      "duotone": "Ikki tonli",
+      "twotone": "Ikki rangli"
+    },
+    "copyHint": "{{name}} importini nusxalash uchun bosing"
+  }
+}
