@@ -11,7 +11,8 @@
     "settingsAppearance": "Appearance",
     "settingsProfile": "Profile",
     "settingsSecurity": "Security",
-    "settingsNotifications": "Notifications"
+    "settingsNotifications": "Notifications",
+    "settingsRoles": "Roles & Permissions"
   },
   "header": {
     "profile": "Profile",
@@ -32,5 +33,9 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "empty": "No data available"
+  },
+  "forbidden": {
+    "subtitle": "Sorry, you don't have permission to access this page.",
+    "backHome": "Back Home"
   }
 }

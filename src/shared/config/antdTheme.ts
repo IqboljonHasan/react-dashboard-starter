@@ -2,7 +2,7 @@ import type { ThemeConfig } from 'antd';
 import { theme as antdAlgorithm } from 'antd';
 
 export const antdTheme: ThemeConfig = {
-  cssVar: true,
+  cssVar: {},
   token: {
     colorPrimary: '#1677ff',
     colorSuccess: '#52c41a',

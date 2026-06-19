@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 
 import { DashboardPage } from '@/pages/dashboard';
+import { ForbiddenPage } from '@/pages/forbidden';
 import { LoginPage } from '@/pages/login';
 import { NotFoundPage } from '@/pages/not-found';
 import { ReportsPage } from '@/pages/reports';
@@ -8,6 +9,7 @@ import {
   AppearancePage,
   NotificationsPage,
   ProfilePage,
+  RolesPage,
   SecurityPage,
   SettingsLayout,
 } from '@/pages/settings';
@@ -18,6 +20,7 @@ import { DashboardLayout } from '@/widgets/layout';
 
 import { AuthGuard } from './guards/AuthGuard';
 import { GuestGuard } from './guards/GuestGuard';
+import { RoleGuard } from './guards/RoleGuard';
 import { navHandleMap, SUB_ROUTE_HANDLES } from './navConfig';
 import type { CustomRoute } from './types';
 
@@ -41,15 +44,20 @@ const routeConfig: CustomRoute[] = [
           },
 
           {
-            path: ROUTES.USERS,
-            element: <Outlet />,
-            handle: navHandleMap[ROUTES.USERS],
+            element: <RoleGuard permission="users:view" />,
             children: [
-              { index: true, element: <UsersPage /> },
               {
-                path: ':id',
-                element: <UserDetailPage />,
-                handle: SUB_ROUTE_HANDLES[ROUTES.USER_DETAIL],
+                path: ROUTES.USERS,
+                element: <Outlet />,
+                handle: navHandleMap[ROUTES.USERS],
+                children: [
+                  { index: true, element: <UsersPage /> },
+                  {
+                    path: ':id',
+                    element: <UserDetailPage />,
+                    handle: SUB_ROUTE_HANDLES[ROUTES.USER_DETAIL],
+                  },
+                ],
               },
             ],
           },
@@ -101,12 +109,23 @@ const routeConfig: CustomRoute[] = [
                 element: <NotificationsPage />,
                 handle: SUB_ROUTE_HANDLES[ROUTES.SETTINGS_NOTIFICATIONS],
               },
+              {
+                element: <RoleGuard permission="roles:manage" />,
+                children: [
+                  {
+                    path: 'roles',
+                    element: <RolesPage />,
+                    handle: SUB_ROUTE_HANDLES[ROUTES.SETTINGS_ROLES],
+                  },
+                ],
+              },
             ],
           },
         ],
       },
     ],
   },
+  { path: ROUTES.FORBIDDEN, element: <ForbiddenPage /> },
   { path: '*', element: <NotFoundPage /> },
 ];
 

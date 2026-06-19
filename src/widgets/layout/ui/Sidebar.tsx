@@ -9,6 +9,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import type { NavRoute } from '@/app/router/navConfig';
 import { NAV_ROUTES } from '@/app/router/navConfig';
+import type { AuthUser } from '@/entities/session';
+import { hasPermission, useSessionStore } from '@/entities/session';
 import { useSettingsStore } from '@/entities/settings';
 import { env } from '@/shared/config/env';
 
@@ -25,15 +27,20 @@ function toMenuItems(
   routes: NavRoute[],
   t: (key: string) => string,
   navigate: (path: string) => void,
+  role: AuthUser['role'] | undefined,
 ): MenuItem[] {
   return routes
-    .filter((r) => !r.handle.hideOnSidebar)
+    .filter(
+      (r) =>
+        !r.handle.hideOnSidebar &&
+        (!r.handle.permission || hasPermission(role, r.handle.permission)),
+    )
     .map((r) => ({
       key: r.path,
       icon: r.handle.icon,
       label: t(r.handle.title),
       ...(r.children
-        ? { children: toMenuItems(r.children, t, navigate) }
+        ? { children: toMenuItems(r.children, t, navigate, role) }
         : { onClick: () => navigate(r.path) }),
     }));
 }
@@ -43,10 +50,11 @@ export function Sidebar() {
   const { pathname } = useLocation();
   const { t } = useTranslation('common');
   const { sidebarCollapsed, toggleSidebar, motionEnabled } = useSettingsStore();
+  const role = useSessionStore((s) => s.user?.role);
   const widthCtrl = useAnimationControls();
   const iconCtrl = useAnimationControls();
 
-  const menuItems = toMenuItems(NAV_ROUTES, t, navigate);
+  const menuItems = toMenuItems(NAV_ROUTES, t, navigate, role);
 
   // Collapsing (expanded) → pill stretches right; opening (collapsed) → stretches left.
   const growX = sidebarCollapsed ? -(BUTTON_GROW - BUTTON_SIZE) : 0;

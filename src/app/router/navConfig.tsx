@@ -5,6 +5,7 @@ import {
   BgColorsOutlined,
   DashboardOutlined,
   LockOutlined,
+  SafetyCertificateOutlined,
   SettingOutlined,
   SmileOutlined,
   UserOutlined,
@@ -27,7 +28,7 @@ export const NAV_ROUTES: NavRoute[] = [
   },
   {
     path: ROUTES.USERS,
-    handle: { title: 'nav.users', icon: <UserOutlined /> },
+    handle: { title: 'nav.users', icon: <UserOutlined />, permission: 'users:view' },
   },
   {
     path: ROUTES.REPORTS,
@@ -67,6 +68,14 @@ export const NAV_ROUTES: NavRoute[] = [
         path: ROUTES.SETTINGS_NOTIFICATIONS,
         handle: { title: 'nav.settingsNotifications', icon: <BellOutlined /> },
       },
+      {
+        path: ROUTES.SETTINGS_ROLES,
+        handle: {
+          title: 'nav.settingsRoles',
+          icon: <SafetyCertificateOutlined />,
+          permission: 'roles:manage',
+        },
+      },
     ],
   },
 ];
@@ -84,4 +93,5 @@ export const SUB_ROUTE_HANDLES: Record<string, RouteHandle> = {
   [ROUTES.SETTINGS_PROFILE]: { title: 'nav.settingsProfile' },
   [ROUTES.SETTINGS_SECURITY]: { title: 'nav.settingsSecurity' },
   [ROUTES.SETTINGS_NOTIFICATIONS]: { title: 'nav.settingsNotifications' },
+  [ROUTES.SETTINGS_ROLES]: { title: 'nav.settingsRoles' },
 };

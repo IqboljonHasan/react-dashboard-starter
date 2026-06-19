@@ -3,6 +3,7 @@ import type { TableProps } from 'antd';
 import { Button, Popconfirm, Space, Table, Tag, Typography } from 'antd';
 import { parseAsInteger, parseAsString, parseAsStringEnum, useQueryState } from 'nuqs';
 import { useTranslation } from 'react-i18next';
+import { useHasPermission } from '@/entities/session';
 import type { User, UserRole, UserStatus } from '@/entities/user';
 import { UserAvatar, useUsersQuery } from '@/entities/user';
 import { useDeleteUser } from '@/features/user-delete';
@@ -43,6 +44,8 @@ export function UsersTable() {
   });
 
   const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
+  const canEditUser = useHasPermission('users:edit');
+  const canDeleteUser = useHasPermission('users:delete');
 
   const columns: TableProps<User>['columns'] = [
     {
@@ -78,26 +81,32 @@ export function UsersTable() {
       key: 'createdAt',
       render: (date: string) => dayjs(date).format('DD MMM YYYY'),
     },
-    {
-      title: t('table.actions'),
-      key: 'actions',
-      align: 'right',
-      render: (_, record) => (
-        <Space size="small">
-          <Button type="text" icon={<EditOutlined />} size="small" />
-          <Popconfirm
-            title={t('deleteConfirm.title')}
-            description={t('deleteConfirm.description')}
-            onConfirm={() => deleteUser(record.id)}
-            okText={t('deleteConfirm.ok')}
-            cancelText={t('deleteConfirm.cancel')}
-            okButtonProps={{ danger: true, loading: isDeleting }}
-          >
-            <Button type="text" icon={<DeleteOutlined />} size="small" danger />
-          </Popconfirm>
-        </Space>
-      ),
-    },
+    ...(canEditUser || canDeleteUser
+      ? [
+          {
+            title: t('table.actions'),
+            key: 'actions',
+            align: 'right' as const,
+            render: (_: unknown, record: User) => (
+              <Space size="small">
+                {canEditUser && <Button type="text" icon={<EditOutlined />} size="small" />}
+                {canDeleteUser && (
+                  <Popconfirm
+                    title={t('deleteConfirm.title')}
+                    description={t('deleteConfirm.description')}
+                    onConfirm={() => deleteUser(record.id)}
+                    okText={t('deleteConfirm.ok')}
+                    cancelText={t('deleteConfirm.cancel')}
+                    okButtonProps={{ danger: true, loading: isDeleting }}
+                  >
+                    <Button type="text" icon={<DeleteOutlined />} size="small" danger />
+                  </Popconfirm>
+                )}
+              </Space>
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (

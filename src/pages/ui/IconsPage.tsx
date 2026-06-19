@@ -50,7 +50,6 @@ import { parseAsInteger, parseAsString, parseAsStringEnum, useQueryState } from 
 import { type ComponentType, type CSSProperties, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { IconProps } from '@/shared/ui/all-icons/round/stroke/withSvg';
 import { PageTitle } from '@/shared/ui/PageTitle';
 
 // Canonical, never-translated labels shown in the view. Their translated
@@ -63,6 +62,12 @@ const VARIANT_LABELS = {
   duotone: 'Duotone',
   twotone: 'Twotone',
 } as const;
+
+/** Shape of the in-house "Huge Icons" components — that asset library isn't checked into the repo yet. */
+interface IconProps {
+  size?: number;
+  className?: string;
+}
 
 type IconTab = keyof typeof TAB_LABELS;
 type IconShape = keyof typeof SHAPE_LABELS;

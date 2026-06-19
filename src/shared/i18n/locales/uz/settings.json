@@ -20,5 +20,20 @@
     "light": "Yorug'",
     "dark": "Qorong'i",
     "system": "Tizim"
+  },
+  "roles": {
+    "pageTitle": "Rollar va ruxsatlar",
+    "matrixTitle": "Ruxsatlar jadvali",
+    "assignmentTitle": "Rollarni tayinlash",
+    "permission": "Ruxsat",
+    "user": "Foydalanuvchi",
+    "permissions": {
+      "users:view": "Foydalanuvchilarni ko'rish",
+      "users:create": "Foydalanuvchi yaratish",
+      "users:edit": "Foydalanuvchini tahrirlash",
+      "users:delete": "Foydalanuvchini o'chirish",
+      "reports:view": "Hisobotlarni ko'rish",
+      "roles:manage": "Rollar va ruxsatlarni boshqarish"
+    }
   }
 }

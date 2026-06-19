@@ -20,5 +20,20 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System"
+  },
+  "roles": {
+    "pageTitle": "Roles & Permissions",
+    "matrixTitle": "Permission matrix",
+    "assignmentTitle": "Assign roles",
+    "permission": "Permission",
+    "user": "User",
+    "permissions": {
+      "users:view": "View users",
+      "users:create": "Create users",
+      "users:edit": "Edit users",
+      "users:delete": "Delete users",
+      "reports:view": "View reports",
+      "roles:manage": "Manage roles & permissions"
+    }
   }
 }

@@ -284,6 +284,7 @@ Protected routes use layout-route guards:
 ```tsx
 // AuthGuard redirects to /login if not authenticated
 // GuestGuard redirects to /dashboard if already authenticated
+// RoleGuard redirects to ROUTES.FORBIDDEN (/403) if the user lacks the given permission
 ```
 
 After login success, redirect to `location.state.from` (the page the user tried to access before being kicked).
@@ -293,3 +294,34 @@ Route constants:
 import { ROUTES } from '@/shared/config/routes';
 navigate(ROUTES.USERS);
 ```
+
+## Role-Based Permissions
+
+`UserRole` (`'admin' | 'manager' | 'viewer'`) → `Permission` strings via `ROLE_PERMISSIONS` in
+`src/entities/session/model/permissions.ts`. Admin has every permission; manager has all `users:*`
+except `users:delete`; viewer is view-only. All exported from `@/entities/session`:
+
+```ts
+import { hasPermission, useHasPermission } from '@/entities/session';
+
+// in a component
+const canDelete = useHasPermission('users:delete');
+
+// outside React (or in a loop where hooks can't be called per-item)
+hasPermission(role, 'users:edit');
+```
+
+```tsx
+// protecting a route — wrap as a layout route, same pattern as AuthGuard
+{
+  element: <RoleGuard permission="users:view" />,
+  children: [{ path: ROUTES.USERS, element: <UsersPage /> }],
+}
+
+// hiding a nav item — cosmetic only, the route still needs its own RoleGuard
+{ path: ROUTES.USERS, handle: { title: 'nav.users', icon: <UserOutlined />, permission: 'users:view' } }
+```
+
+Assigning roles to users is a UI feature, not a new permission: `/settings/roles`
+(`roles:manage`, admin-only) renders the `role-permissions` widget — a read-only permission matrix plus
+a per-user role `Select` that calls the existing `useUpdateUser` mutation.

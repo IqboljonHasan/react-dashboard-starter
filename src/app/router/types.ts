@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom';
+import type { Permission } from '@/entities/session';
 
 export interface RouteHandle {
   /** i18n key used for sidebar label and breadcrumb text */
@@ -10,6 +11,8 @@ export interface RouteHandle {
   icon?: ReactNode;
   /** Exclude from sidebar nav */
   hideOnSidebar?: boolean;
+  /** Hide from sidebar nav unless the current user has this permission */
+  permission?: Permission;
   /** Exclude from breadcrumb trail */
   noBreadcrumb?: boolean;
   /** Render as non-clickable breadcrumb item */

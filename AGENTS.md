@@ -85,6 +85,8 @@ through the public index re-export.
 | `src/shared/config/antdTheme.ts` | Ant Design v5 theme tokens (light + dark) |
 | `src/shared/i18n/index.ts` | i18next init with lazy `resourcesToBackend` |
 | `src/entities/session/model/sessionStore.ts` | Zustand auth store (tokens, user, isAuthenticated) |
+| `src/entities/session/model/permissions.ts` | `Permission` type, `ROLE_PERMISSIONS` map, `hasPermission()` |
+| `src/app/router/guards/RoleGuard.tsx` | Layout-route guard; redirects to `ROUTES.FORBIDDEN` if the user lacks a permission |
 | `src/entities/settings/model/settingsStore.ts` | Zustand settings store (theme, colorTheme, language, sidebarCollapsed, motionEnabled) |
 | `src/entities/user/model/userKeys.ts` | TanStack Query key factory for users |
 
@@ -120,6 +122,23 @@ Animations use `motion` (Framer Motion), governed by the persisted `settingsStor
 `DashboardLayout` (fade + slide keyed on pathname) and takes an `enabled` prop. CSS animations like the
 gear spin (`.settings-gear`) are gated by `[data-motion="off"]` on `<html>`, set by `ThemeSync`. Keep
 shared animation components settings-agnostic (pass `enabled` down) rather than importing the store.
+
+## Role-Based Permissions
+
+`UserRole` (`'admin' | 'manager' | 'viewer'`) maps to `Permission` strings (e.g. `'users:view'`,
+`'users:delete'`, `'roles:manage'`) via `ROLE_PERMISSIONS` in `src/entities/session/model/permissions.ts`.
+Everything is exported from `@/entities/session`: `Permission`, `ALL_PERMISSIONS`, `ALL_ROLES`,
+`ROLE_PERMISSIONS`, `hasPermission(role, permission)` (plain fn), `useHasPermission(permission)` (hook).
+
+- **Protect a route**: wrap it as a layout route with `<RoleGuard permission="..." />`
+  (`src/app/router/guards/RoleGuard.tsx`) — redirects to `ROUTES.FORBIDDEN` on failure. See the
+  `ROUTES.USERS` and `ROUTES.SETTINGS_ROLES` blocks in `src/app/router/index.tsx`.
+- **Hide a nav item**: set `permission` on the route's `handle` in `navConfig.tsx` — `Sidebar.tsx`
+  filters `NAV_ROUTES` by it. This is cosmetic only; the route must still carry its own `RoleGuard`.
+- **Gate an action/button**: call `useHasPermission('users:edit')` in the component.
+- **Assign roles to users**: `/settings/roles` (admin-only, `roles:manage`) — `RolesPage` composes the
+  `role-permissions` widget (`PermissionsMatrix` read-only grid + `UserRoleAssignment` per-user role
+  `Select`, which calls the existing `useUpdateUser` mutation).
 
 ## Adding New Pages / Features
 
@@ -265,3 +284,5 @@ interface ImportMetaEnv {
 - Do not add `console.log` statements — use proper error handling
 - Do not call `statsApi` / `userApi` directly inside widgets with a raw `useQuery` — use the entity query hooks (`useStatsQuery`, `useUsersQuery`, `useUserQuery`) so fake-data branching is respected
 - Do not let `fakeData.ts` fall out of sync with `types.ts` — update both together
+- Do not gate a route with only a hidden nav item — `permission` on a `navConfig.tsx` handle hides the
+  link, it does not block direct navigation; the route also needs `<RoleGuard permission="..." />`

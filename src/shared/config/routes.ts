@@ -12,4 +12,6 @@ export const ROUTES = {
   SETTINGS_PROFILE: '/settings/profile',
   SETTINGS_SECURITY: '/settings/security',
   SETTINGS_NOTIFICATIONS: '/settings/notifications',
+  SETTINGS_ROLES: '/settings/roles',
+  FORBIDDEN: '/403',
 } as const;

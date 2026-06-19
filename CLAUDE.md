@@ -182,11 +182,45 @@ Powered by `motion` (Framer Motion). A persisted `useSettingsStore().motionEnabl
 Guards are layout routes in `src/app/router/index.tsx`:
 - `GuestGuard` — redirects authenticated users to `/dashboard`
 - `AuthGuard` — redirects unauthenticated users to `/login`, preserves `location.state.from` for post-login redirect
+- `RoleGuard` (`src/app/router/guards/RoleGuard.tsx`) — takes a `permission` prop, redirects to `ROUTES.FORBIDDEN` (`/403`, rendered by `ForbiddenPage`) when the current user lacks it. Used as a wrapping layout route around the route(s) it protects, same pattern as `AuthGuard`.
 
 All route paths are constants in `src/shared/config/routes.ts`:
 ```ts
-ROUTES.LOGIN / ROUTES.DASHBOARD / ROUTES.USERS / ROUTES.REPORTS / ROUTES.SETTINGS
+ROUTES.LOGIN / ROUTES.DASHBOARD / ROUTES.USERS / ROUTES.REPORTS / ROUTES.SETTINGS / ROUTES.SETTINGS_ROLES / ROUTES.FORBIDDEN
 ```
+
+## Role-Based Permissions
+
+Roles (`UserRole` / `AuthUser['role']`: `'admin' | 'manager' | 'viewer'`) are mapped to fine-grained
+permissions in `src/entities/session/model/permissions.ts`:
+
+- `Permission` — union of permission strings, e.g. `'users:view' | 'users:create' | 'users:edit' |
+  'users:delete' | 'reports:view' | 'roles:manage'`
+- `ROLE_PERMISSIONS` — `Record<UserRole, Permission[]>`. Admin has every permission; manager has all
+  `users:*` except `users:delete`; viewer has view-only (`users:view`, `reports:view`).
+- `ALL_PERMISSIONS` / `ALL_ROLES` — arrays for iterating in UI (e.g. a permission matrix).
+- `hasPermission(role, permission)` — plain function (not a hook), usable outside components.
+- `useHasPermission(permission)` — hook reading the current session role via `useSessionStore`.
+
+All exported from `@/entities/session`.
+
+**Route protection** — wrap the route(s) with `<RoleGuard permission="..." />` as a layout route
+(see `ROUTES.USERS` and `ROUTES.SETTINGS_ROLES` in `src/app/router/index.tsx` for examples).
+
+**Nav visibility** — `RouteHandle.permission` (optional) on a `navConfig.tsx` entry hides that sidebar
+item (`Sidebar.tsx` filters `NAV_ROUTES` by `hasPermission(role, handle.permission)`) for users who lack it.
+This only hides the link — the route itself must still be wrapped in `RoleGuard` to actually block access.
+
+**UI-level gating** — call `useHasPermission('users:edit')` etc. inside components to conditionally
+render actions (e.g. `UsersTable` hides Edit/Delete buttons, `UsersPage` hides "Add User").
+
+**Assigning roles** — `/settings/roles` (`RolesPage`, gated by `roles:manage`, admin-only) renders the
+`role-permissions` widget: a read-only `PermissionsMatrix` (role × permission grid) and
+`UserRoleAssignment` (per-user role `Select`, persisted via the existing `useUpdateUser` mutation —
+no new API surface). A user cannot change their own role from this screen.
+
+**Adding a new permission**: add the literal to `Permission`, add it to `ROLE_PERMISSIONS` for each
+role it applies to, add a label under `settings.roles.permissions.<key>` in both locale files.
 
 ## Internationalisation
 

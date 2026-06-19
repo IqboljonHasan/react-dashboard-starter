@@ -11,7 +11,8 @@
     "settingsAppearance": "Ko'rinish",
     "settingsProfile": "Profil",
     "settingsSecurity": "Xavfsizlik",
-    "settingsNotifications": "Bildirishnomalar"
+    "settingsNotifications": "Bildirishnomalar",
+    "settingsRoles": "Rollar va ruxsatlar"
   },
   "header": {
     "profile": "Profil",
@@ -32,5 +33,9 @@
     "loading": "Yuklanmoqda...",
     "error": "Xatolik yuz berdi",
     "empty": "Ma'lumot yo'q"
+  },
+  "forbidden": {
+    "subtitle": "Kechirasiz, bu sahifaga kirish huquqingiz yo'q.",
+    "backHome": "Bosh sahifaga qaytish"
   }
 }
