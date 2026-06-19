@@ -1,13 +1,15 @@
 import {
-  ArrowLeftOutlined,
   BellOutlined,
-  BgColorsOutlined,
+  DesktopOutlined,
   GlobalOutlined,
   LogoutOutlined,
+  MoonOutlined,
+  SunOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Badge, Button, Dropdown, Layout, Space, Tooltip, Typography } from 'antd';
+import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,6 +33,14 @@ const THEME_LABELS: Record<Theme, string> = {
   system: 'System',
 };
 
+const THEME_ICONS: Record<Theme, ReactNode> = {
+  light: <SunOutlined />,
+  dark: <MoonOutlined />,
+  system: <DesktopOutlined />,
+};
+
+const THEME_CYCLE: Theme[] = ['light', 'dark', 'system'];
+
 export function Header() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('common');
@@ -45,6 +55,11 @@ export function Header() {
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);
     void i18n.changeLanguage(lang);
+  };
+
+  const cycleTheme = () => {
+    const next = THEME_CYCLE[(THEME_CYCLE.indexOf(theme) + 1) % THEME_CYCLE.length];
+    setTheme(next);
   };
 
   const userMenuItems: MenuProps['items'] = [
@@ -69,19 +84,13 @@ export function Header() {
     { key: 'uz', label: "O'zbek", onClick: () => handleLanguageChange('uz') },
   ];
 
-  const themeItems: MenuProps['items'] = (['light', 'dark', 'system'] as Theme[]).map((t) => ({
-    key: t,
-    label: THEME_LABELS[t],
-    onClick: () => setTheme(t),
-  }));
-
   return (
     <AntHeader
       className="sticky top-0 z-50 flex items-center justify-between px-6! border-b border-border shadow-sm"
       style={{ backgroundColor: 'var(--color-header)', height: 64 }}
     >
       <Space size="middle" className="min-w-0">
-        <Tooltip title={t('actions.back')}>
+        {/* <Tooltip title={t('actions.back')}>
           <Button
             type="text"
             shape="circle"
@@ -89,31 +98,33 @@ export function Header() {
             icon={<ArrowLeftOutlined />}
             onClick={() => navigate(-1)}
           />
-        </Tooltip>
+        </Tooltip> */}
         <Breadcrumbs />
       </Space>
 
       <Space size="middle">
-        <Dropdown menu={{ items: themeItems, selectedKeys: [theme] }} placement="bottomRight">
-          <Space
-            size={4}
-            className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <BgColorsOutlined className="text-lg" />
-            <Text className="text-sm text-muted-foreground hidden sm:inline">
-              {THEME_LABELS[theme]}
-            </Text>
-          </Space>
-        </Dropdown>
+        <Tooltip title={THEME_LABELS[theme]}>
+          <Button
+            type="text"
+            shape="circle"
+            aria-label={THEME_LABELS[theme]}
+            icon={THEME_ICONS[theme]}
+            onClick={cycleTheme}
+            className="text-muted-foreground hover:text-foreground"
+          />
+        </Tooltip>
 
         <Dropdown menu={{ items: languageItems, selectedKeys: [language] }} placement="bottomRight">
-          <Space
-            size={4}
-            className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
-          >
+          <Button>
             <GlobalOutlined className="text-lg" />
             <Text className="text-sm text-muted-foreground">{LANGUAGE_LABELS[language]}</Text>
-          </Space>
+          </Button>
+          {/* <Space
+            className=" cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <div className="flex justify-center items-center gap-1 bg-muted px-2 py-1 rounded">
+            </div>
+          </Space> */}
         </Dropdown>
 
         <Badge count={3} size="small">
@@ -125,9 +136,14 @@ export function Header() {
             <Avatar
               src={user?.avatarUrl}
               icon={!user?.avatarUrl ? <UserOutlined /> : undefined}
-              size="small"
+              // size="small"
             />
-            <Text className="hidden sm:inline text-foreground">{user?.name}</Text>
+            <span className="hidden sm:flex flex-col leading-tight">
+              <Text className="text-sm text-foreground">{user?.name || 'User'}</Text>
+              {user?.role && (
+                <Text className="text-xs text-muted-foreground capitalize">{user.role}</Text>
+              )}
+            </span>
           </Space>
         </Dropdown>
       </Space>
